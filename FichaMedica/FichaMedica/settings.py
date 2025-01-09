@@ -1,3 +1,4 @@
+
 """
 Django settings for FichaMedica project.
 
@@ -25,8 +26,8 @@ SECRET_KEY = 'django-insecure-!cy-2z7&5o=i(#euh@gvqr_o)!@-twm_&=6!o-487&79dybjsq
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ALLOWED_HOSTS = ['Salud.onrender.com', 'localhost']
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -74,6 +75,7 @@ else:
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -170,6 +172,7 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 #Media Files
 MEDIA_URL = '/media/'
