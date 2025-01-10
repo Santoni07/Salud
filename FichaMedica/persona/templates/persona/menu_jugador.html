@@ -49,7 +49,7 @@
   /* Make sidebar collapse on small screens */
   @media (max-width: 767.98px) {
     #sidebarMenu {
-      display: none;
+      display: block;
     }
     .content {
       text-align: center;
@@ -73,6 +73,27 @@
 .row{
   background-color: #ecf0f1;
 }
+.responsive-map {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Limita el tamaño máximo */
+  margin: 0 auto; /* Centra el mapa */
+  padding-bottom: 56.25%; /* Relación 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 10px; /* Bordes redondeados opcional */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Sombra opcional */
+}
+
+.responsive-map iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 </style>
 
     <div class="container-fluid ">
@@ -230,21 +251,15 @@
               <!-- Mapa de Google Maps embebido -->
               <div class="mt-4">
                 <h5>Ubicación del Torneo</h5>
-                <iframe
-                  width="600"
-                  height="450"
-                  style="border: 0"
-                  loading="lazy"
-                  allowfullscreen
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4820.030071378765!2d-64.19140032407297!3d-31.323751378199383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329a2946526775%3A0x990a4ccfbc13a275!2sUni%C3%B3n%20Cordobesa%20de%20F%C3%BAtbol%20Amateur!5e0!3m2!1ses!2sar!4v1729720527705!5m2!1ses!2sar"
-                  width="600"
-                  height="450"
-                  style="border: 0"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                >
-                </iframe>
+                <div class="responsive-map">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4820.030071378765!2d-64.19140032407297!3d-31.323751378199383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329a2946526775%3A0x990a4ccfbc13a275!2sUni%C3%B3n%20Cordobesa%20de%20F%C3%BAtbol%20Amateur!5e0!3m2!1ses!2sar!4v1729720527705!5m2!1ses!2sar"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                  </iframe>
+                </div>
+                  
               </div>
             </div>
           </div>
@@ -394,21 +409,16 @@
               <!-- Mapa de Google Maps embebido -->
               <div class="mt-4">
                 <h5>Ubicación del Torneo</h5>
-                <iframe
-                  width="600"
-                  height="450"
-                  style="border: 0"
-                  loading="lazy"
-                  allowfullscreen
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4820.030071378765!2d-64.19140032407297!3d-31.323751378199383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329a2946526775%3A0x990a4ccfbc13a275!2sUni%C3%B3n%20Cordobesa%20de%20F%C3%BAtbol%20Amateur!5e0!3m2!1ses!2sar!4v1729720527705!5m2!1ses!2sar"
-                  width="600"
-                  height="450"
-                  style="border: 0"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                >
-                </iframe>
+                <div class="responsive-map">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4820.030071378765!2d-64.19140032407297!3d-31.323751378199383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329a2946526775%3A0x990a4ccfbc13a275!2sUni%C3%B3n%20Cordobesa%20de%20F%C3%BAtbol%20Amateur!5e0!3m2!1ses!2sar!4v1729720527705!5m2!1ses!2sar"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                  </iframe>
+                </div>
+                
               </div>
             </div>
           </div>
