@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView  # Importa LogoutView
 from .views import *
+from . import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -20,5 +21,6 @@ urlpatterns = [
     path('reset/done/', 
          auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), 
          name='password_reset_complete'),
+     path('check_session/', views.check_session, name='check_session'),
 ]
 

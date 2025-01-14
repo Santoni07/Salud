@@ -366,3 +366,4 @@ def cambiar_contraseña(request):
         form = CustomPasswordChangeForm(request.user)
 
     return render(request, 'persona/modificar_contrasena.html', {'form': form})
+

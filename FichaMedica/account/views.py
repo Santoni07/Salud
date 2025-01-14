@@ -4,6 +4,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
+from django.http import JsonResponse
+from django.contrib.auth import logout
+
+from django.utils import timezone
+from django.contrib.sessions.models import Session
 
 @never_cache
 def user_login(request):
@@ -42,6 +47,15 @@ def user_login(request):
 def dashboard(request):
     return redirect('persona/registrar')
 
+@login_required
+def check_session(request):
+    # Verificar si la sesión ha expirado
+    session = Session.objects.get(session_key=request.session.session_key)
+    if timezone.now() - session.get_decoded().get('_session_expiry') > timezone.timedelta(seconds=900):
+        return JsonResponse({'session_expired': True})
+    else:
+        return JsonResponse({'session_expired': False})
+
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
@@ -56,7 +70,9 @@ def register(request):
     return render(request, 'account/register.html', {'user_form': user_form})
 
 def logout_view(request):
-    return render(request, 'core/home.html')
+    logout
+    return redirect('core/home.html')
+    
 
 
 

@@ -14,7 +14,7 @@ urlpatterns = [
     path('perfil/', views.perfil, name='perfil'),
      # URL para cambiar el email
     path('modificar_email/', views.cambiar_email, name='modificar_email'),
-
+    
     # URL para cambiar la contraseña
     path('modificar_contrasena/', views.cambiar_contraseña, name='modificar_contrasena'),
    

@@ -10,16 +10,40 @@
   }
   main{
     background-color: #ecf0f1;
-  }
   
+  }
+  /* Sidebar oculto */
+#sidebar {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+}
+
+  /* Sidebar visible */
+  #sidebar.active {
+      width: 250px; /* Ajusta según prefieras */
+  }
+
+  /* Main ocupa todo el espacio cuando sidebar está oculto */
+  
+
+  /* Main se ajusta cuando sidebar está activo */
+  #sidebar.active + main {
+      margin-left: 250px;
+  }
   /* Custom styles for sidebar */
   #sidebarMenu {
-    height: 50vh;
+    height: auto;
+   
+    min-height: 40vh; 
+    position: relative;
     background-color:  #ecf0f1;
     padding-top: 20px;
     font-size: 1.2rem; /* Aumentar tamaño de texto */
   }
-
+  #submenuEstudios, #submenuDatosMedicos {
+    margin-bottom: 20px;
+  }
   .sidebar .nav-link {
     font-size: 1.2rem; /* Aumentar el tamaño del texto del menú */
     padding: 15px 20px; /* Espaciado más grande */
@@ -61,39 +85,52 @@
     color: #155724;
     padding: 10px;
     border-radius: 5px;
+  }
+
+  .ficha-medica.no-aprobada {
+      background-color: #fff3cd; /* Amarillo claro */
+      border-color: #ffeeba;
+      color: #856404;
+      padding: 10px;
+      border-radius: 5px;
+  }
+  .row{
+    background-color: #ecf0f1;
+  }
+  .responsive-map {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Limita el tamaño máximo */
+    margin: 0 auto; /* Centra el mapa */
+    padding-bottom: 56.25%; /* Relación 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px; /* Bordes redondeados opcional */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Sombra opcional */
+  }
+
+  .responsive-map iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+
+  }
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
-.ficha-medica.no-aprobada {
-    background-color: #fff3cd; /* Amarillo claro */
-    border-color: #ffeeba;
-    color: #856404;
-    padding: 10px;
-    border-radius: 5px;
+#overlay.hidden {
+    display: none;
 }
-.row{
-  background-color: #ecf0f1;
-}
-.responsive-map {
-  position: relative;
-  width: 100%;
-  max-width: 600px; /* Limita el tamaño máximo */
-  margin: 0 auto; /* Centra el mapa */
-  padding-bottom: 56.25%; /* Relación 16:9 */
-  height: 0;
-  overflow: hidden;
-  border-radius: 10px; /* Bordes redondeados opcional */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Sombra opcional */
-}
-
-.responsive-map iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
 </style>
 
     <div class="container-fluid ">
@@ -109,108 +146,107 @@
     </div>
 
   <div class="row">
+    <div class="content py-5 text-center" id="welcomeContent">
+      <h1 class="text-black">
+        Bienvenido {{profile.nombre}} {{profile.apellido}}
+        
+      </h1>
+      <br>
+      <h2 class="text-black">
+        Selecciona una opción del menú para continuar.
+      </h2>
+    </div>
     <!-- Sidebar -->
-  <nav
-      id="sidebarMenu"
-      class="col-md-2 col-lg-2 d-md-block  sidebar collapse"
-    >
-    <h3 class="text-center">Menu</h3>
-    <div class="position-sticky pt-3">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link" href="#" id="consultarApto">
-            <i class="bi bi-file-medical"></i>
-            Consultar Apto
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" id="datomedico">
-            <i class="bi bi-journal-text"></i>
-            Datos Médicos
-          </a>
-          <ul class="nav flex-column ms-3" id="submenuDatosMedicos" style="display: none;">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-               href="{% url 'registroMedico:ver_antecedente' jugador.id %}"
-                id="antecedentes"
-              >
-                Antecedentes
-              </a>
-            </li>
-    
-            {% if ficha_medica %}
+    <nav
+        id="sidebarMenu"
+        class="col-12 col-md-2 col-lg-2 d-md-block sidebar collapse"
+      >
+      <h3 class="text-left" style="margin-left: 20px;">Menu</h3>
+      <div class="">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="consultarApto">
+              <i class="bi bi-file-medical"></i>
+              Consultar Apto
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="datomedico">
+              <i class="bi bi-journal-text"></i>
+              Datos Médicos
+            </a>
+            <ul class="nav flex-column ms-3" id="submenuDatosMedicos" style="display: none;">
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  href="{% url 'registroMedico:consentimiento' ficha_medica.idfichaMedica %}"
-                  id="consentimiento"
+                href="{% url 'registroMedico:ver_antecedente' jugador.id %}"
+                  id="antecedentes"
                 >
-                  Consentimiento
+                  Antecedentes
                 </a>
               </li>
-    
-              <li class="nav-item">
-                <a class="nav-link" href="#" id="estudiosToggle">
-                  <i class="bi bi-journal-text"></i>
-                  Estudios
-                </a>
-                <ul class="nav flex-column ms-3" id="submenuEstudios" style="display: none;">
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'registroMedico:cargar_estudio' ficha_medica.idfichaMedica %}">
-                      Cargar Estudios
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'registroMedico:ver_estudios' ficha_medica.idfichaMedica %}">
-                      Ver Estudios
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <p class="nav-link">No hay ficha médica disponible.</p>
-              </li>
-            {% endif %}
-            
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" id="datospersonales">
-            <i class="bi bi-person"></i>
-            Datos Personales
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" id="vertorneo">
-            <i class="bi bi-trophy"></i>
-            Ver Torneo
-          </a>
-        </li>
-      </ul>
-    </div>
-    
-  </nav>
+      
+              {% if ficha_medica %}
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="{% url 'registroMedico:consentimiento' ficha_medica.idfichaMedica %}"
+                    id="consentimiento"
+                  >
+                    Consentimiento
+                  </a>
+                </li>
+      
+                <li class="nav-item">
+                  <a class="nav-link" href="#" id="estudiosToggle">
+                    <i class="bi bi-journal-text"></i>
+                    Estudios
+                  </a>
+                  <ul class="nav flex-column ms-3" id="submenuEstudios" style="display: none;">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'registroMedico:cargar_estudio' ficha_medica.idfichaMedica %}">
+                        Cargar Estudios
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'registroMedico:ver_estudios' ficha_medica.idfichaMedica %}">
+                        Ver Estudios
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <p class="nav-link">No hay ficha médica disponible.</p>
+                </li>
+              {% endif %}
+              
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="datospersonales">
+              <i class="bi bi-person"></i>
+              Datos Personales
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="" id="vertorneo">
+              <i class="bi bi-trophy"></i>
+              Ver Torneo
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+    </nav>
 
+ 
     <!-- Main content with background image -->
-  <main
-      class="col-md-10 ms-sm-auto col-lg-10 px-md-4"
-      style="position: relative; min-height: 100vh "
-    >
+  <main class="col-12 col-md-10 px-3" style="position: relative; min-height: 100vh;">
    
 
 
-      <div class="content py-5 text-center" id="welcomeContent">
-        <h1 class="text-black">
-          Bienvenido {{profile.nombre}} {{profile.apellido}}
-          
-        </h1>
-        <br>
-        <h2 class="text-black">
-          Selecciona una opción del menú para continuar.
-        </h2>
-      </div>
+  
 
           <!-- Lógica para mostrar la alerta -->
           {% if not ficha_medica.consentimiento_persona %}
@@ -428,6 +464,7 @@
     
 
   </main>
+</div>
 <!-- JavaScript para mostrar/ocultar contenido -->
 <script>
   // Mostrar el mensaje de bienvenida al cargar la página
@@ -517,7 +554,16 @@
       document.getElementById("aptoTable").classList.add("d-none");
       document.getElementById("datosPersonales").classList.add("d-none");
     });
-    
+// scripts que maneja la apertura y cierre del nav bar 
+document.addEventListener('click', function(event) {
+  const navbar = document.getElementById('navbarNav');
+  const toggler = document.querySelector('.navbar-toggler');
+
+  if (navbar.classList.contains('show') && !navbar.contains(event.target) && !toggler.contains(event.target)) {
+      toggler.click();  // Cierra el menú
+  }
+}); 
+
 </script>
 
 {% endblock %}
