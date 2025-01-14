@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 from django.http import JsonResponse
 from django.contrib.auth import logout
-
+from django.contrib import messages
 from django.utils import timezone
 from django.contrib.sessions.models import Session
 
@@ -38,7 +38,8 @@ def user_login(request):
                 else:
                     return HttpResponse('El usuario no está activo')
             else:
-                return HttpResponse('Usuario o contraseña incorrectos')
+                messages.error(request, 'Usuario o contraseña incorrectos intente nuevmente.')
+                return redirect('login')  # Redirige al login
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
