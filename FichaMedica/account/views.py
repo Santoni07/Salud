@@ -6,10 +6,10 @@ from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 from django.http import JsonResponse
 from django.contrib.auth import logout
-from django.contrib import messages
+
 from django.utils import timezone
 from django.contrib.sessions.models import Session
-
+from django.contrib import messages
 @never_cache
 def user_login(request):
     if request.method == 'POST':
