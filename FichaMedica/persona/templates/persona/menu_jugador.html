@@ -131,19 +131,34 @@
 #overlay.hidden {
     display: none;
 }
+/* Para dispositivos pequeños */
+@media (max-width: 576px) {
+  .ficha-medica-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/* Para dispositivos más grandes (a partir de 576px) el contenedor no cambia */
+@media (min-width: 576px) {
+  .ficha-medica-container {
+    display: block; /* O el estilo original que tenías */
+  }
+}
 </style>
 
-    <div class="container-fluid ">
-      {% if ficha_medica.estado == "APROBADA" %}
-      <div class="alert alert-info ficha-medica aprobada " role="alert">
-          <p><strong>Estado del Apto Médico:</strong> {{ ficha_medica.estado }} <strong> - Fecha de Caducidad:</strong> {{ ficha_medica.fecha_caducidad }}</p>
-      </div>
-      {% else %}
-      <div class="alert alert-info ficha-medica no-aprobada" role="alert">
-          <p><strong>No tienes aptos médicos aprobados.</strong></p>
-      </div>
-      {% endif %}
-    </div>
+<div class="container-fluid ficha-medica-container">
+  {% if ficha_medica.estado == "APROBADA" %}
+  <div class="alert alert-info ficha-medica aprobada" role="alert">
+      <p><strong>Estado del Apto Médico:</strong> {{ ficha_medica.estado }} <strong> - Fecha de Caducidad:</strong> {{ ficha_medica.fecha_caducidad }}</p>
+  </div>
+  {% else %}
+  <div class="alert alert-info ficha-medica no-aprobada" role="alert">
+      <p><strong>No tienes aptos médicos aprobados.</strong></p>
+  </div>
+  {% endif %}
+</div>
 
   <div class="row">
     <div class="content py-5 text-center" id="welcomeContent">
