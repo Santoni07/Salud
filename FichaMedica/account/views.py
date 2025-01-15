@@ -17,15 +17,15 @@ def user_login(request):
         if form.is_valid():
             cd = form.cleaned_data  # Limpio los datos
             user = authenticate(request, username=cd['email'], password=cd['password'])  # Autenticación por email
-            
+
             if user is not None:  # Si el usuario existe y está activo
                 if user.is_active:
                     login(request, user)
-                    
+
                     # Obtener el perfil del usuario y imprimir el rol
                     profile = user.profile  # Asegúrate de que el usuario tenga un perfil relacionado
                     print("Usuario autenticado:", profile.rol)  # Imprimir el rol del perfil
-                    
+
                     # Redirigir según el rol del usuario
                     if profile.rol == 'medico':  # Verifica si el rol es médico
                         return redirect('medico_home')  # Cambia a la URL adecuada para médicos
@@ -33,6 +33,8 @@ def user_login(request):
                         return redirect('registrar_persona')  # Cambia a la URL adecuada para jugadores
                     elif profile.rol == 'representante':
                         return redirect('representante_home')
+                    elif profile.rol == 'jugador':
+                        return redirect('menu_jugador')
                     else:
                         return redirect('home')  # Redirigir a una página predeterminada si no es médico ni jugador
                 else:
@@ -73,7 +75,7 @@ def register(request):
 def logout_view(request):
     logout
     return redirect('core/home.html')
-    
+
 
 
 

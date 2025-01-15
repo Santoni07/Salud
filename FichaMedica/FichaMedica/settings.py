@@ -28,11 +28,11 @@ SECRET_KEY = 'django-insecure-!cy-2z7&5o=i(#euh@gvqr_o)!@-twm_&=6!o-487&79dybjsq
 DEBUG = True
 ALLOWED_HOSTS = []
 
-
 # Tiempo máximo de inactividad (en segundos) antes de que la sesión expire
-SESSION_COOKIE_AGE = 960  # 15 minutos
+SESSION_COOKIE_AGE = 900  # 15 minutos
 # Tiempo máximo de inactividad antes de que la sesión se cierre automáticamente (en segundos)
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Esto hace que la sesión se cierre al cerrar el navegador
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Esto hace que la sesión se cierre al cerrar el navegador
+
 
 # Application definition
 
@@ -49,13 +49,13 @@ INSTALLED_APPS = [
     'publicidad',
     'persona',
     'Medico',
-  
+
     'Representate',
-   
+
     'RegistroMedico',
-  
-    
-   
+
+
+
 ]
 # Configuración de sitio
 SITE_ID = 1
@@ -99,9 +99,9 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -132,7 +132,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-} 
+}
 
 
 # Password validation

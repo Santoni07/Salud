@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %} {% load static %} 
+{% extends 'core/base.html' %} {% load static %}
 
 
 
@@ -10,7 +10,7 @@
   }
   main{
     background-color: #ecf0f1;
-  
+
   }
   /* Sidebar oculto */
 #sidebar {
@@ -25,7 +25,7 @@
   }
 
   /* Main ocupa todo el espacio cuando sidebar está oculto */
-  
+
 
   /* Main se ajusta cuando sidebar está activo */
   #sidebar.active + main {
@@ -34,8 +34,8 @@
   /* Custom styles for sidebar */
   #sidebarMenu {
     height: auto;
-   
-    min-height: 40vh; 
+
+    min-height: 40vh;
     position: relative;
     background-color:  #ecf0f1;
     padding-top: 20px;
@@ -118,19 +118,6 @@
     border: 0;
 
   }
-  #overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-#overlay.hidden {
-    display: none;
-}
 /* Para dispositivos pequeños */
 @media (max-width: 576px) {
   .ficha-medica-container {
@@ -148,7 +135,7 @@
 }
 </style>
 
-<div class="container-fluid ficha-medica-container">
+   <div class="container-fluid ficha-medica-container">
   {% if ficha_medica.estado == "APROBADA" %}
   <div class="alert alert-info ficha-medica aprobada" role="alert">
       <p><strong>Estado del Apto Médico:</strong> {{ ficha_medica.estado }} <strong> - Fecha de Caducidad:</strong> {{ ficha_medica.fecha_caducidad }}</p>
@@ -164,7 +151,7 @@
     <div class="content py-5 text-center" id="welcomeContent">
       <h1 class="text-black">
         Bienvenido {{profile.nombre}} {{profile.apellido}}
-        
+
       </h1>
       <br>
       <h2 class="text-black">
@@ -200,7 +187,7 @@
                   Antecedentes
                 </a>
               </li>
-      
+
               {% if ficha_medica %}
                 <li class="nav-item">
                   <a
@@ -211,7 +198,7 @@
                     Consentimiento
                   </a>
                 </li>
-      
+
                 <li class="nav-item">
                   <a class="nav-link" href="#" id="estudiosToggle">
                     <i class="bi bi-journal-text"></i>
@@ -235,7 +222,7 @@
                   <p class="nav-link">No hay ficha médica disponible.</p>
                 </li>
               {% endif %}
-              
+
             </ul>
           </li>
           <li class="nav-item">
@@ -252,34 +239,34 @@
           </li>
         </ul>
       </div>
-      
+
     </nav>
 
- 
+
     <!-- Main content with background image -->
   <main class="col-12 col-md-10 px-3" style="position: relative; min-height: 100vh;">
-   
 
 
-  
+
+
 
           <!-- Lógica para mostrar la alerta -->
           {% if not ficha_medica.consentimiento_persona %}
           <div class="alert alert-warning text-center mt-4" role="alert">
-              <strong>Recuerda:</strong> 
+              <strong>Recuerda:</strong>
               {% if ficha_medica.antecedenteenfermedades %}
                   No te olvides de dar tu consentimiento. Dirígete a Datos Médicos / Consentimiento.
                   <a href="{% url 'registroMedico:consentimiento' ficha_medica.idfichaMedica %}" class="btn btn-secondary">Otorgar Consentimiento</a>
               {% else %}
-                  Es obligatorio cargar los antecedentes de enfermedades. 
+                  Es obligatorio cargar los antecedentes de enfermedades.
                   <a href="{% url 'registroMedico:cargar_antecedente' jugador_id %}" class="btn btn-primary">Cargar Antecedentes</a>
               {% endif %}
           </div>
           {% endif %}
 
-        
 
-        
+
+
         <!-- Sección para mostrar el torneo seleccionado -->
         {% for categoria_equipo in jugador_info.categorias_equipo %}
         <div class="container mt-5 d-none" id="torneoSeleccionado">
@@ -310,7 +297,7 @@
                     referrerpolicy="no-referrer-when-downgrade">
                   </iframe>
                 </div>
-                  
+
               </div>
             </div>
           </div>
@@ -337,9 +324,9 @@
                 <td>{{ categoria_equipo.nombre_equipo }}</td>
                 <td>
                   {% if ficha_medica.consentimiento_persona %}
-                  Sí 
+                  Sí
                   {% else %}
-                  No 
+                  No
                   {% endif %}
                 </td>
                 <td>
@@ -437,7 +424,7 @@
             </div>
           </div>
         </div>
-        
+
          <!-- Sección para mostrar el torneo seleccionado -->
         {% for categoria_equipo in jugador_info.categorias_equipo %}
         <div class="container mt-5 d-none" id="torneoSeleccionado">
@@ -469,14 +456,14 @@
                     referrerpolicy="no-referrer-when-downgrade">
                   </iframe>
                 </div>
-                
+
               </div>
             </div>
           </div>
         </div>
 
-        
-    
+
+
 
   </main>
 </div>
@@ -491,26 +478,26 @@
       'datospersonales': 'datosPersonales',
       'torneoSeleccionado': 'torneoSeleccionado'  // Aquí está la sección de torneo
     };
-  
+
     // Función para ocultar el mensaje de bienvenida al hacer clic en los enlaces del menú
     const menuLinks = document.querySelectorAll("#sidebarMenu .nav-link");
     menuLinks.forEach((link) => {
       link.addEventListener("click", function (event) {
         welcomeContent.classList.add("d-none"); // Ocultar mensaje de bienvenida
         const clickedId = this.id;
-  
+
         // Ocultar todas las secciones
         Object.values(sections).forEach(section => {
           document.getElementById(section).classList.add("d-none");
         });
-  
+
         // Mostrar la sección correspondiente
         if (sections[clickedId]) {
           document.getElementById(sections[clickedId]).classList.remove("d-none");
         }
       });
     });
-  
+
     // Mostrar la sección del torneo al hacer clic en el botón "Ver Torneo"
     const verTorneoButton = document.getElementById('vertorneo');
     if (verTorneoButton) {
@@ -521,10 +508,10 @@
       });
     }
   };
-  
 
-  
-  
+
+
+
 
   document
     .getElementById("consultarApto")
@@ -538,7 +525,7 @@
       event.preventDefault();
       const submenu = document.getElementById("submenuEstudios");
       submenu.style.display = submenu.style.display === "none" ? "block" : "none"; // Alternar la visibilidad
-  });  
+  });
   document
     .getElementById("datospersonales")
     .addEventListener("click", function (event) {
@@ -569,7 +556,7 @@
       document.getElementById("aptoTable").classList.add("d-none");
       document.getElementById("datosPersonales").classList.add("d-none");
     });
-// scripts que maneja la apertura y cierre del nav bar 
+// scripts que maneja la apertura y cierre del nav bar
 document.addEventListener('click', function(event) {
   const navbar = document.getElementById('navbarNav');
   const toggler = document.querySelector('.navbar-toggler');
@@ -577,10 +564,10 @@ document.addEventListener('click', function(event) {
   if (navbar.classList.contains('show') && !navbar.contains(event.target) && !toggler.contains(event.target)) {
       toggler.click();  // Cierra el menú
   }
-}); 
+});
 
 </script>
 
 {% endblock %}
-    
+
 
