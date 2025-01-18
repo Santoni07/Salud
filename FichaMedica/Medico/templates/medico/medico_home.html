@@ -167,297 +167,297 @@ body{
     </div>
     
 
-   <!-- Sección de Antecedentes -->
-    <div class="container mt-5" id="ficha_medica_section" style="display:none;">  
-    
-    
-        <h2 class="text-center mb-4">Ficha Medica</h2>
-        <div id="antecedentes-section"  class="row">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <div class="card mb-3">
-                    
-                    <div class="card-header">
-                        <button class="btn btn-secondary w-100" onclick="toggleForm('antecedentes-content')">Ver Antecedentes</button>
-                    </div>   
-                    <div id="antecedentes-content" style="display:none;">
-                    <!-- Datos del jugador -->
-                    
-                        <div class="mt-4">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered text-center" style="border: 2px solid black; background-color: beige;">
+                    <!-- Sección de Antecedentes -->
+                        <div class="container mt-5" id="ficha_medica_section" style="display:none;">  
                         
-                                        <thead class="thead-dark">
-                                            
-                                            <tr>
-                                                <th class="text-center">Información del Jugador</th>
-                                                <th class="text-center">Detalles</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for jugador in jugadores_info %}
-                                            
-                                            <tr>
-                                                <td class="align-left">Nombre</td>
-                                                <td class="text-center">{{ jugador.nombre }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">Apellido</td>
-                                                <td class="text-center">{{ jugador.apellido }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">Dirección</td>
-                                                <td class="text-center">{{ jugador.direccion }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">Teléfono</td>
-                                                <td class="text-center">{{ jugador.telefono }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">Grupo Sanguíneo</td>
-                                                <td class="text-center">{{ jugador.grupo_sanguineo }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">Cobertura Médica</td>
-                                                <td class="text-center">{{ jugador.cobertura_medica }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">N° Afiiado</td>
-                                                <td class="text-center">{{ jugador.numero_afiliado }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">Torneo</td>
-                                                <td class="text-center">{{ jugador.categorias_equipo.0.torneo }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">Categoría</td>
-                                                <td class="text-center">{{ jugador.categorias_equipo.0.nombre_categoria }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-left">Equipo</td>
-                                                <td class="text-center">{{ jugador.categorias_equipo.0.nombre_equipo }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
                         
+                            <h2 class="text-center mb-4">Ficha Medica</h2>
+                            <div id="antecedentes-section"  class="row">
+                                <div class="col-lg-6 col-md-8 mx-auto">
+                                    <div class="card mb-3">
+                                        
+                                        <div class="card-header">
+                                            <button class="btn btn-secondary w-100" onclick="toggleForm('antecedentes-content')">Ver Antecedentes</button>
+                                        </div>   
+                                        <div id="antecedentes-content" style="display:none;">
+                                        <!-- Datos del jugador -->
+                                        
+                                            <div class="mt-4">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered text-center" style="border: 2px solid black; background-color: beige;">
+                                            
+                                                            <thead class="thead-dark">
+                                                                
+                                                                <tr>
+                                                                    <th class="text-center">Información del Jugador</th>
+                                                                    <th class="text-center">Detalles</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for jugador in jugadores_info %}
+                                                                
+                                                                <tr>
+                                                                    <td class="align-left">Nombre</td>
+                                                                    <td class="text-center">{{ jugador.nombre }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">Apellido</td>
+                                                                    <td class="text-center">{{ jugador.apellido }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">Dirección</td>
+                                                                    <td class="text-center">{{ jugador.direccion }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">Teléfono</td>
+                                                                    <td class="text-center">{{ jugador.telefono }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">Grupo Sanguíneo</td>
+                                                                    <td class="text-center">{{ jugador.grupo_sanguineo }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">Cobertura Médica</td>
+                                                                    <td class="text-center">{{ jugador.cobertura_medica }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">N° Afiiado</td>
+                                                                    <td class="text-center">{{ jugador.numero_afiliado }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">Torneo</td>
+                                                                    <td class="text-center">{{ jugador.categorias_equipo.0.torneo }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">Categoría</td>
+                                                                    <td class="text-center">{{ jugador.categorias_equipo.0.nombre_categoria }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="align-left">Equipo</td>
+                                                                    <td class="text-center">{{ jugador.categorias_equipo.0.nombre_equipo }}</td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                            
+                                                    </div>
+                                        
+                                            </div> 
+                                            
+                                            <!--Antecedentes -->
+                                            <div class="table-responsive">
+                                                    
+                                                    <table class="table table-bordered text-center" style="border: 2px solid black ;">
+                                                        <thead class="thead-dark">
+                                                        
+                                                
+                                                            
+                                                                
+                                                            <tr>
+                                                            
+                                                                <th>Antecedente de Enfermedades</th>
+                                                                <th class="text-center">Respuesta</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for jugador in jugadores_info %}
+                                                                {% for antecedente in jugador.antecedentes %}
+                                                                <tr>
+                                                                    
+                                                                    <td >¿Fue operado en los ultimos 4 meses?</td>
+                                                                    <td class="text-center">{{ antecedente.fue_operado|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td >¿Toma regularmente alguna medicación?</td>
+                                                                    <td class="text-center">{{ antecedente.toma_medicacion|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td >¿Estuvo internado en el ultimo año?</td>
+                                                                    <td class="text-center">{{ antecedente.estuvo_internado|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <td>¿Sufre de hormigueos en las manos ?</td>
+                                                                    <td class="text-center">{{ antecedente.sufre_hormigueos|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <td>¿Es diabético?</td>
+                                                                    <td class="text-center">{{ antecedente.es_diabetico|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Es asmático?</td>
+                                                                    <td class="text-center">{{ antecedente.es_asmatico|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td >¿Es alérgico?</td>
+                                                                    <td class="text-center">{{ antecedente.es_alergico|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Observaciones de alergias:</td>
+                                                                    <td colspan="2" class="align-left">{{ antecedente.alerg_observ }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td >¿Tiene antecedentes de epilepsia o convulsiones?</td>
+                                                                    <td class="text-center">{{ antecedente.antecedente_epilepsia|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <td>¿Tiene desviasión de columna?</td>
+                                                                    <td class="text-center">{{ antecedente.desviacion_columna|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Tine dolor de cintura despues de realizar ejercicios físicos ?</td>
+                                                                    <td class="text-center">{{ jugador.antecedenteenfermedades.dolor_cintira|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Ha tenido fracturas, luxaciones o lesiones ligamentarias en los últimos 4 meses?</td>
+                                                                    <td class="text-center">{{ jugador.antecedenteenfermedades.fracturas|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <td>¿Tiene dolores articulares ?</td>
+                                                                    <td class="text-center">{{ antecedente.dolores_articulares|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <td class="align-left">¿ Alguna vez experimentó excesiva falta de aire mientras realizaba ejercicios físicos ?</td>
+                                                                    <td class="text-center">{{ antecedente.falta_aire|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <td>¿Ha tenido traumatismos de cráneo con pérdida del conocimiento en los últimos 4 meses ?</td>
+                                                                    <td class="text-center">{{ jugador.antecedenteenfermedades.tramatismos_craneo|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Alguna vez sintió dolor en el pecho mientras realizaba ejercicios físicos o inmediatamente después?</td>
+                                                                    <td class="text-center">{{ jugador.antecedenteenfermedades.dolor_pecho|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Alguna vez perdió el conocimiento mientras realizaba ejercicios físicos o inmediatamente después?</td>
+                                                                    <td class="text-center">{{ antecedente.perdida_conocimiento|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Le han detectado alguna vez presión arterial alta?</td>
+                                                                    <td class="text-center">{{ antecedente.presion_arterial|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <td>¿ Alguien de la familia ha sufrido una muerte súbita antes de los 45 años?</td>
+                                                                    <td class="text-center">{{ antecedente.muerte_subita_familiar|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Algún familiar directo tiene alguna enfermedad cardiaca, diagnóstico de engrosamiento anormal del corazón o de Síndrome de Marfán?</td>
+                                                                    <td class="text-center">{{ antecedente.enfermedad_cardiaca_familiar|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Le han detectado alguna vez un soplo cardíaco?</td>
+                                                                    <td class="text-center">{{ antecedente.soplo_cardiaco|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Algún médico le ha sugerido en alguna oportunidad abstenerse de participar en competiciones atléticas?</td>
+                                                                    <td class="text-center">{{ antecedente.abstenerce_competencia|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Algún familiar suyo de menos de 65 años (Padres, abuelos, hermanos/as) tiene antecedentes de enfermedad coronaria incluyendo ataques cardíacos, cirugías de by pass, angioplastia o angina?</td>
+                                                                    <td class="text-center">{{ antecedente.antecedentes_coronarios_familiares|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                
+                                                                    <td >¿Fuma, es hipertenso o diabético, tiene colesterol alto?</td>
+                                                                    <td class="text-center">{{ antecedente.fumar_hipertension_diabetes|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Observaciones:</td>
+                                                                    <td class="text-center">{{ antecedente.fhd_observacion }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>¿Consumo de cocaína o anabólicos?</td>
+                                                                    <td class="text-center">{{ antecedente.consumo_cocaina_anabolicos|yesno:"Sí,No" }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Observaciones:</td>
+                                                                    <td class="text-center" >{{ antecedente.cca_observaciones }}</td>
+                                                                </tr>
+                                                                
+                                                            </tbody>
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                        
+                                                    
+                                                    </table>
+                                            </div>
+                                        
+                                        </div>         
+                                    </div>   
+                                
                                 </div>
-                    
-                        </div> 
-                        
-                        <!--Antecedentes -->
-                        <div class="table-responsive">
-                                
-                                <table class="table table-bordered text-center" style="border: 2px solid black ;">
-                                    <thead class="thead-dark">
-                                    
+                            </div>
                             
-                                        
-                                            
-                                        <tr>
-                                        
-                                            <th>Antecedente de Enfermedades</th>
-                                            <th class="text-center">Respuesta</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for jugador in jugadores_info %}
-                                            {% for antecedente in jugador.antecedentes %}
-                                            <tr>
-                                                
-                                                <td >¿Fue operado en los ultimos 4 meses?</td>
-                                                <td class="text-center">{{ antecedente.fue_operado|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td >¿Toma regularmente alguna medicación?</td>
-                                                <td class="text-center">{{ antecedente.toma_medicacion|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td >¿Estuvo internado en el ultimo año?</td>
-                                                <td class="text-center">{{ antecedente.estuvo_internado|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <td>¿Sufre de hormigueos en las manos ?</td>
-                                                <td class="text-center">{{ antecedente.sufre_hormigueos|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <td>¿Es diabético?</td>
-                                                <td class="text-center">{{ antecedente.es_diabetico|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Es asmático?</td>
-                                                <td class="text-center">{{ antecedente.es_asmatico|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td >¿Es alérgico?</td>
-                                                <td class="text-center">{{ antecedente.es_alergico|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Observaciones de alergias:</td>
-                                                <td colspan="2" class="align-left">{{ antecedente.alerg_observ }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td >¿Tiene antecedentes de epilepsia o convulsiones?</td>
-                                                <td class="text-center">{{ antecedente.antecedente_epilepsia|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <td>¿Tiene desviasión de columna?</td>
-                                                <td class="text-center">{{ antecedente.desviacion_columna|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Tine dolor de cintura despues de realizar ejercicios físicos ?</td>
-                                                <td class="text-center">{{ jugador.antecedenteenfermedades.dolor_cintira|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Ha tenido fracturas, luxaciones o lesiones ligamentarias en los últimos 4 meses?</td>
-                                                <td class="text-center">{{ jugador.antecedenteenfermedades.fracturas|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <td>¿Tiene dolores articulares ?</td>
-                                                <td class="text-center">{{ antecedente.dolores_articulares|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <td class="align-left">¿ Alguna vez experimentó excesiva falta de aire mientras realizaba ejercicios físicos ?</td>
-                                                <td class="text-center">{{ antecedente.falta_aire|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <td>¿Ha tenido traumatismos de cráneo con pérdida del conocimiento en los últimos 4 meses ?</td>
-                                                <td class="text-center">{{ jugador.antecedenteenfermedades.tramatismos_craneo|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Alguna vez sintió dolor en el pecho mientras realizaba ejercicios físicos o inmediatamente después?</td>
-                                                <td class="text-center">{{ jugador.antecedenteenfermedades.dolor_pecho|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Alguna vez perdió el conocimiento mientras realizaba ejercicios físicos o inmediatamente después?</td>
-                                                <td class="text-center">{{ antecedente.perdida_conocimiento|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Le han detectado alguna vez presión arterial alta?</td>
-                                                <td class="text-center">{{ antecedente.presion_arterial|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <td>¿ Alguien de la familia ha sufrido una muerte súbita antes de los 45 años?</td>
-                                                <td class="text-center">{{ antecedente.muerte_subita_familiar|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Algún familiar directo tiene alguna enfermedad cardiaca, diagnóstico de engrosamiento anormal del corazón o de Síndrome de Marfán?</td>
-                                                <td class="text-center">{{ antecedente.enfermedad_cardiaca_familiar|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Le han detectado alguna vez un soplo cardíaco?</td>
-                                                <td class="text-center">{{ antecedente.soplo_cardiaco|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Algún médico le ha sugerido en alguna oportunidad abstenerse de participar en competiciones atléticas?</td>
-                                                <td class="text-center">{{ antecedente.abstenerce_competencia|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Algún familiar suyo de menos de 65 años (Padres, abuelos, hermanos/as) tiene antecedentes de enfermedad coronaria incluyendo ataques cardíacos, cirugías de by pass, angioplastia o angina?</td>
-                                                <td class="text-center">{{ antecedente.antecedentes_coronarios_familiares|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                            
-                                                <td >¿Fuma, es hipertenso o diabético, tiene colesterol alto?</td>
-                                                <td class="text-center">{{ antecedente.fumar_hipertension_diabetes|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Observaciones:</td>
-                                                <td class="text-center">{{ antecedente.fhd_observacion }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>¿Consumo de cocaína o anabólicos?</td>
-                                                <td class="text-center">{{ antecedente.consumo_cocaina_anabolicos|yesno:"Sí,No" }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Observaciones:</td>
-                                                <td class="text-center" >{{ antecedente.cca_observaciones }}</td>
-                                            </tr>
-                                            
-                                        </tbody>
-                                        {% endfor %}
-                                    {% endfor %}
-                                    
                                 
-                                </table>
+                        
+                            
+                            <div class="row">
+                                <div class="col-lg-6 col-md-8 mx-auto">
+                                    {% for jugador in jugadores_info %}
+                                        
+                                        <!-- Estudios Médicos -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <button class="btn btn-secondary w-100" onclick="toggleForm('estudios-medicos')">
+                                Estudios Médicos
+                            </button>
                         </div>
-                    
-                    </div>         
-                </div>   
-            
-            </div>
-        </div>
-        
-             
-       
-        
-        <div class="row">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                {% for jugador in jugadores_info %}
-                    
-                    <!-- Estudios Médicos -->
-<div class="card mb-3">
-    <div class="card-header">
-        <button class="btn btn-secondary w-100" onclick="toggleForm('estudios-medicos')">
-            Estudios Médicos
-        </button>
-    </div>
-    <div id="estudios-medicos" class="card-body" style="display: none;">
-        <!-- Mostrar Estudios Existentes -->
-        {% for estudio in jugador.estudios_medicos %}
-        <div class="mb-2">
-            <strong>Tipo: </strong>{{ estudio.tipo }}
-            {% if estudio.archivo %}
-            <a href="{{ estudio.archivo }}" target="_blank" class="btn btn-link">Ver archivo</a>
-             <!-- Botón Eliminar -->
-             <form action="{% url 'registroMedico:eliminar_estudio_medico' estudio.pk %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que quieres eliminar este archivo?')">Eliminar</button>
-            </form>
-            
-            {% else %}
-            
-            <span class="text-danger">No cargado</span>
-            {% endif %}
-            <p><strong>Observaciones:</strong> {{ estudio.observaciones|default:"Sin observaciones" }}</p>
-        </div>
-        {% endfor %}
-        {% if not jugador.estudios_medicos %}
-        <p>No hay estudios médicos cargados.</p>
-        {% endif %}
-        <h3 class="text-center">Cargar Estudios</h3>
-        <!-- Formulario para Cargar Nuevos Estudios -->
-        <form ="cargarEstudioForm_{{ jugador.id }}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-              <!-- Campo oculto para el ID del Jugador -->
-              <input type="hidden" name="jugador_id" value="{{ jugador.id }}">
-            <div class="mb-3">
-                <label for="tipo_{{ jugador.id }}" class="form-label">Tipo de Estudio</label>
-                <select id="tipo_{{ jugador.id }}" name="tipo_estudio" class="form-select" required>
-                    <option value="" disabled selected>Seleccionar Tipo</option>
-                    <option value="ORINA">Análisis de Orina</option>
-                    <option value="ELECTRO">Electrocardiograma</option>
-                    <option value="ERGOMETRIA">Ergometría</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="archivo_{{ jugador.id }}" class="form-label">Archivo</label>
-                <input type="file" id="archivo_{{ jugador.id }}" name="archivo" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="observaciones_{{ jugador.id }}" class="form-label">Observaciones</label>
-                <textarea id="observaciones_{{ jugador.id }}" name="observaciones" class="form-control"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Cargar Estudio Médico</button>
-        </form>
-    </div>
-</div>
+                        <div id="estudios-medicos" class="card-body" style="display: none;">
+                            <!-- Mostrar Estudios Existentes -->
+                            {% for estudio in jugador.estudios_medicos %}
+                            <div class="mb-2">
+                                <strong>Tipo: </strong>{{ estudio.tipo }}
+                                {% if estudio.archivo %}
+                                <a href="{{ estudio.archivo }}" target="_blank" class="btn btn-link">Ver archivo</a>
+                                <!-- Botón Eliminar -->
+                                <form action="{% url 'registroMedico:eliminar_estudio_medico' estudio.pk %}" method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que quieres eliminar este archivo?')">Eliminar</button>
+                                </form>
+                                
+                                {% else %}
+                                
+                                <span class="text-danger">No cargado</span>
+                                {% endif %}
+                                <p><strong>Observaciones:</strong> {{ estudio.observaciones|default:"Sin observaciones" }}</p>
+                            </div>
+                            {% endfor %}
+                            {% if not jugador.estudios_medicos %}
+                            <p>No hay estudios médicos cargados.</p>
+                            {% endif %}
+                            <h3 class="text-center">Cargar Estudios</h3>
+                            <!-- Formulario para Cargar Nuevos Estudios -->
+                            <form ="cargarEstudioForm_{{ jugador.id }}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <!-- Campo oculto para el ID del Jugador -->
+                                <input type="hidden" name="jugador_id" value="{{ jugador.id }}">
+                                <div class="mb-3">
+                                    <label for="tipo_{{ jugador.id }}" class="form-label">Tipo de Estudio</label>
+                                    <select id="tipo_{{ jugador.id }}" name="tipo_estudio" class="form-select" required>
+                                        <option value="" disabled selected>Seleccionar Tipo</option>
+                                        <option value="ORINA">Análisis de Orina</option>
+                                        <option value="ELECTRO">Electrocardiograma</option>
+                                        <option value="ERGOMETRIA">Ergometría</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="archivo_{{ jugador.id }}" class="form-label">Archivo</label>
+                                    <input type="file" id="archivo_{{ jugador.id }}" name="archivo" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="observaciones_{{ jugador.id }}" class="form-label">Observaciones</label>
+                                    <textarea id="observaciones_{{ jugador.id }}" name="observaciones" class="form-control"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Cargar Estudio Médico</button>
+                            </form>
+                        </div>
+                    </div>
 
                     <!-- Electro Basal -->
                     <div class="card mb-3">

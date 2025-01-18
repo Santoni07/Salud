@@ -26,11 +26,10 @@ def registrar_persona(request):
     else:
         print(f"Persona encontrada: {persona}")
 
-    # Verificamos si todos los campos importantes de la persona están completos
+    # Verificamos si los campos obligatorios de la persona están completos
     campos_completos = all([
         persona.direccion,
         persona.telefono,
-        persona.telefono_alternativo,
     ])
 
     # Intentamos obtener el jugador asociado a la persona
@@ -38,8 +37,6 @@ def registrar_persona(request):
         jugador = Jugador.objects.get(persona=persona)
         campos_jugador_completos = all([
             jugador.grupo_sanguineo,
-            jugador.cobertura_medica,
-            jugador.numero_afiliado,
         ])
     except Jugador.DoesNotExist:
         jugador = None  # Si no hay jugador, se establece en None
@@ -56,8 +53,8 @@ def registrar_persona(request):
     else:
         equipo_categoria_completo = False
 
-    # Verificamos si todos los campos de persona, jugador y equipo-categoría están completos
-    if campos_completos and campos_jugador_completos and equipo_categoria_completo:
+    # Verificamos si todos los campos de persona y jugador están completos
+    if campos_completos and campos_jugador_completos:
         return redirect('menu_jugador')
 
     # Manejo de los formularios
