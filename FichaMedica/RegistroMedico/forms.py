@@ -21,36 +21,36 @@ class RegistroMedicoForm(forms.ModelForm):
 class AntecedenteEnfermedadesForm(forms.ModelForm):
     class Meta:
         model = AntecedenteEnfermedades
-        fields = [
-            'fue_operado',
-            'toma_medicacion',
-            'estuvo_internado',
-            'sufre_hormigueos',
-            'es_diabetico',
-            'es_amatico',
-            'es_alergico',
-            'alerg_observ',
-            'antecedente_epilepsia',
-            'desviacion_columna',
-            'dolor_cintira',
-            'fracturas',
-            'dolores_articulares',
-            'falta_aire',
-            'tramatismos_craneo',
-            'dolor_pecho',
-            'perdida_conocimiento',
-            'presion_arterial',
-            'muerte_subita_familiar',
-            'enfermedad_cardiaca_familiar',
-            'soplo_cardiaco',
-            'abstenerce_competencia',
-            'antecedentes_coronarios_familiares',
-            'fumar_hipertension_diabetes',
-            'fhd_observacion',
-            'consumo_cocaina_anabolicos',
-            'cca_observaciones',
-            
-        ]
+        exclude = ['alerg_observ', 'fhd_observacion', 'cca_observaciones','idfichamedica']
+        labels = {
+            'fue_operado': '¿Fue operado en los últimos 4 meses?',
+            'toma_medicacion': '¿Toma regularmente alguna medicación?',
+            'estuvo_internado': '¿Estuvo internado en el último año?',
+            'sufre_hormigueos': '¿Sufre de hormigueos en las manos?',
+            'es_diabetico': '¿Es diabético?',
+            'es_amatico': '¿Es asmático?',
+            'es_alergico': '¿Es alérgico?',
+            'alerg_observ': 'Observaciones de alergias',
+            'antecedente_epilepsia': '¿Tiene antecedentes de epilepsia o convulsiones?',
+            'desviacion_columna': '¿Tiene desviación de columna?',
+            'dolor_cintira': '¿Tiene dolor de cintura después de realizar ejercicios físicos?',
+            'fracturas': '¿Ha tenido fracturas, luxaciones o lesiones ligamentarias en los últimos 4 meses?',
+            'dolores_articulares': '¿Tiene dolores articulares?',
+            'falta_aire': '¿Alguna vez experimentó falta de aire excesiva mientras realizaba ejercicios físicos?',
+            'tramatismos_craneo': '¿Ha tenido traumatismos de cráneo con pérdida de conocimiento en los últimos 4 meses?',
+            'dolor_pecho': '¿Alguna vez sintió dolor en el pecho mientras realizaba ejercicios físicos o después?',
+            'perdida_conocimiento': '¿Alguna vez perdió el conocimiento durante ejercicios físicos o después?',
+            'presion_arterial': '¿Le han detectado alguna vez presión arterial alta?',
+            'muerte_subita_familiar': '¿Algún familiar ha sufrido muerte súbita antes de los 45 años?',
+            'enfermedad_cardiaca_familiar': '¿Familiar directo con antecedentes de enfermedad cardíaca, Síndrome de Marfán?',
+            'soplo_cardiaco': '¿Le han detectado alguna vez un soplo cardíaco?',
+            'abstenerce_competencia': '¿Algún médico le ha recomendado abstenerse de competir?',
+            'antecedentes_coronarios_familiares': '¿Familiares menores de 65 años con antecedentes coronarios?',
+            'fumar_hipertension_diabetes': '¿Fuma, tiene hipertensión, diabetes o colesterol alto?',
+            'fhd_observacion': 'Observaciones sobre FHD',
+            'consumo_cocaina_anabolicos': '¿Consumo de cocaína o anabólicos?',
+            'cca_observaciones': 'Observaciones sobre consumo de cocaína o anabólicos'
+        }
         widgets = {
             'alerg_observ': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
             'fhd_observacion': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
@@ -82,9 +82,18 @@ class ElectroBasalForm(forms.ModelForm):
             'frecuencia': forms.TextInput(attrs={'class': 'form-control'}),
             'arritmias': forms.TextInput(attrs={'class': 'form-control'}),
             'ejeQRS': forms.TextInput(attrs={'class': 'form-control'}),
-            'trazadoNormal': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'trazadoNormal': forms.Select(attrs={'class': 'form-control'}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+    # Define las opciones para 'trazadoNormal'
+    TRAZADO_CHOICES = [
+        ('Sí', 'Sí'),
+        ('No', 'No'),
+    ]
+    
+    trazadoNormal = forms.ChoiceField(choices=TRAZADO_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+
 
 
 class ElectroEsfuerzoForm(forms.ModelForm):
@@ -105,12 +114,15 @@ class CardiovascularForm(forms.ModelForm):
         ]
         widgets = {
             'auscultacion': forms.TextInput(attrs={'class': 'form-control'}),
-            'soplos': forms.TextInput(attrs={'class': 'form-control'}),
             'R1': forms.TextInput(attrs={'class': 'form-control'}),
-            'tension_arterial': forms.TextInput(attrs={'class': 'form-control'}),
             'R2': forms.TextInput(attrs={'class': 'form-control'}),
-            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'soplos': forms.TextInput(attrs={'class': 'form-control'}),
+            'tension_arterial': forms.TextInput(attrs={'class': 'form-control'}),
             'ruidos_agregados': forms.TextInput(attrs={'class': 'form-control'}),
+            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            
+            
+            
         }
 
 

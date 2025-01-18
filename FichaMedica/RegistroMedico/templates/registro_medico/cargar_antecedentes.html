@@ -6,14 +6,14 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center">Antecedentes Médicos de {{ ficha_medica.persona.profile.nombre }} {{ ficha_medica.persona.profile.apellido }}</h2>
+   <div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title text-center">ANTECEDENTES DE ENFERMEDAD</h5>
+        <form method="POST">
+            {% csrf_token %}
 
-    <div class="card mt-3">
-        <div class="card-body">
-            <h5 class="card-title text-center">ANTECEDENTES DE ENFERMEDAD</h5>
-            <form method="POST">
-                {% csrf_token %}
-                
-                {% for field in form %}
+            {% for field in form %}
+            {% if field.name != 'alerg_observ' and field.name != 'fhd_observacion' and field.name != 'cca_observaciones' %}
                 <div class="form-group row align-items-center">
                     <label class="col-sm-8 col-form-label">{{ field.label }}</label>
                     <div class="col-sm-4 d-flex justify-content-end">
@@ -28,34 +28,37 @@
                     </div>
                 </div>
 
-                <!-- Línea de separación -->
-                <hr>
-
-                <!-- Campos de observación -->
-                {% if field.name == 'alerg_observ' %}
+                <!-- Observaciones ubicadas debajo del campo correspondiente -->
+                {% if field.name == 'es_alergico' %}
                 <div class="form-group">
-                    <label for="{{ field.name }}_observaciones">Observaciones sobre Alergias</label>
-                    <input type="text" class="form-control form-control-sm" id="{{ field.name }}_observaciones" name="{{ field.name }}" placeholder="Observaciones" style="width: 70%;" value="{{ field.value }}">
+                    <label for="alerg_observ">Observaciones sobre Alergias</label>
+                    <input type="text" class="form-control form-control-sm" id="alerg_observ" name="alerg_observ" placeholder="Observaciones" style="width: 70%;" value="{{ form.alerg_observ.value }}">
                 </div>
-                {% elif field.name == 'fhd_observacion' %}
+                {% elif field.name == 'fumar_hipertension_diabetes' %}
                 <div class="form-group">
-                    <label for="{{ field.name }}_observaciones">Observaciones sobre FHD</label>
-                    <input type="text" class="form-control form-control-sm" id="{{ field.name }}_observaciones" name="{{ field.name }}" placeholder="Observaciones" style="width: 70%;" value="{{ field.value }}">
+                    <label for="fhd_observacion">Observaciones sobre FHD</label>
+                    <input type="text" class="form-control form-control-sm" id="fhd_observacion" name="fhd_observacion" placeholder="Observaciones" style="width: 70%;" value="{{ form.fhd_observacion.value }}">
                 </div>
-                {% elif field.name == 'cca_observaciones' %}
+                {% elif field.name == 'consumo_cocaina_anabolicos' %}
                 <div class="form-group">
-                    <label for="{{ field.name }}_observaciones">Observaciones sobre CCA</label>
-                    <input type="text" class="form-control form-control-sm" id="{{ field.name }}_observaciones" name="{{ field.name }}" placeholder="Observaciones" style="width: 70%;" value="{{ field.value }}">
+                    <label for="cca_observaciones">Observaciones sobre CCA</label>
+                    <input type="text" class="form-control form-control-sm" id="cca_observaciones" name="cca_observaciones" placeholder="Observaciones" style="width: 70%;" value="{{ form.cca_observaciones.value }}">
                 </div>
                 {% endif %}
-                {% endfor %}
-              
-                <!-- Botón de Guardar fuera del recuadro -->
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-primary btn-sm" style="width: 40%">Guardar</button>
-                </div>
-            </form>
-        </div>
+
+                <hr>
+            {% endif %}
+            {% endfor %}
+
+            <!-- Botón de Guardar -->
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary btn-sm" style="width: 40%">Guardar</button>
+            </div>
+        </form>
     </div>
+</div>
+
+    
+    
 </div>
 {% endblock %}
