@@ -282,27 +282,49 @@ def electro_esfuerzo_view(request, jugador_id):
 
 
 def cardiovascular_view(request, jugador_id):
+    # Obtener el jugador
     jugador = get_object_or_404(Jugador, id=jugador_id)
+
+    # Obtener el registro médico del jugador
     registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
     if not registro_medico:
         return HttpResponse("No se encontró el registro médico del jugador.", status=404)
 
+    # Obtener los datos de cardiovascular del registro médico
     cardiovascular = Cardiovascular.objects.filter(ficha_medica=registro_medico).first()
+
+    # Si se recibe el formulario POST
     if request.method == 'POST':
         cardiovascular_form = CardiovascularForm(request.POST, instance=cardiovascular)
+        
+        # Si el formulario es válido
         if cardiovascular_form.is_valid():
             with transaction.atomic():
                 cardiovascular = cardiovascular_form.save(commit=False)
-                cardiovascular.ficha_medica = registro_medico
+                cardiovascular.ficha_medica = registro_medico  # Asignar el registro médico
                 cardiovascular.save()
+            
+            # Si es una petición AJAX, enviar una respuesta JSON
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse({"success": True, "message": "Formulario guardado exitosamente."})
+        
+        # Si no es AJAX, puedes mostrar los errores
+        else:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"success": False, "errors": cardiovascular_form.errors})
+
+    # Si es GET, o no se envió un POST
     else:
         cardiovascular_form = CardiovascularForm(instance=cardiovascular)
 
+   
+  
+    
+   
     return render(request, 'medico/medico_home.html', {
         'jugador': jugador,
         'cardiovascular_form': cardiovascular_form,
+        
     })
 
 
