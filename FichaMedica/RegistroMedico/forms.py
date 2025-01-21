@@ -21,7 +21,7 @@ class RegistroMedicoForm(forms.ModelForm):
 class AntecedenteEnfermedadesForm(forms.ModelForm):
     class Meta:
         model = AntecedenteEnfermedades
-        exclude = ['alerg_observ', 'fhd_observacion', 'cca_observaciones','idfichamedica']
+        exclude = ['alerg_observ', 'fhd_observacion', 'cca_observaciones','idfichaMedica']
         labels = {
             'fue_operado': '¿Fue operado en los últimos 4 meses?',
             'toma_medicacion': '¿Toma regularmente alguna medicación?',
@@ -170,3 +170,29 @@ class RegistroMedicoUpdateForm(forms.ModelForm):
             'fecha_de_llenado': forms.DateInput(attrs={'type': 'date'}),
             'fecha_caducidad': forms.DateInput(attrs={'type': 'date'}),
         } 
+
+
+class OtrosExamenesClinicosForm(forms.ModelForm):
+    class Meta:
+        model = OtrosExamenesClinicos
+        exclude = ['ficha_medica']
+        fields = [
+            'respiratorio_observaciones',
+            'renal_observaciones',
+            'digestivo_observaciones',
+            'osteoarticular_observaciones',
+            'ficha_medica'
+        ]
+        widgets = {
+            'respiratorio_observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,'placeholder': 'Ingrese observaciones respiratorias...'}),
+
+            'renal_observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,'placeholder': 'Ingrese observaciones renales...'}),
+            'digestivo_observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,'placeholder': 'Ingrese observaciones digestivas...'}),
+            'osteoarticular_observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,'placeholder': 'Ingrese observaciones osteoarticulares...'}),
+        }
+        labels = {
+            'respiratorio_observaciones': 'Observaciones Respiratorias',
+            'renal_observaciones': 'Observaciones Renales',
+            'digestivo_observaciones': 'Observaciones Digestivas',
+            'osteoarticular_observaciones': 'Observaciones Osteoarticulares',
+        }

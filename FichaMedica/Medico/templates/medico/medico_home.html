@@ -499,105 +499,105 @@ body{
                     </div>
             
                  <!-- Cardiovascular -->
-<div class="card mb-3">
-    <div class="card-header">
-        <button class="btn btn-secondary w-100" onclick="toggleForm('cardiovascular_form')">Cardiovascular</button>
-    </div>
-    <div id="cardiovascular_form" class="collapse" style="display:none;">
-        <div class="card-body">
-            <form method="POST" class="ajax-form" action="{% url 'cardiovascular_view' jugador.id %}">
-                {% csrf_token %}
-                
-                <!-- Campo 'auscultacion' -->
-                <div class="mb-3">
-                    <label for="{{ jugador.cardiovascular_form.auscultacion.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.auscultacion.label }}</label>
-                    {{ jugador.cardiovascular_form.auscultacion }}
-                    {% if jugador.cardiovascular_form.auscultacion.help_text %}
-                        <small class="form-text text-muted">{{ jugador.cardiovascular_form.auscultacion.help_text }}</small>
-                    {% endif %}
-                    {% for error in jugador.cardiovascular_form.auscultacion.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <button class="btn btn-secondary w-100" onclick="toggleForm('cardiovascular_form')">Cardiovascular</button>
+                        </div>
+                        <div id="cardiovascular_form" class="collapse" style="display:none;">
+                            <div class="card-body">
+                                <form method="POST" class="ajax-form" action="{% url 'cardiovascular_view' jugador.id %}">
+                                    {% csrf_token %}
+                                    
+                                    <!-- Campo 'auscultacion' -->
+                                    <div class="mb-3">
+                                        <label for="{{ jugador.cardiovascular_form.auscultacion.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.auscultacion.label }}</label>
+                                        {{ jugador.cardiovascular_form.auscultacion }}
+                                        {% if jugador.cardiovascular_form.auscultacion.help_text %}
+                                            <small class="form-text text-muted">{{ jugador.cardiovascular_form.auscultacion.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in jugador.cardiovascular_form.auscultacion.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
 
-                <!-- Campo 'R1' -->
-                <div class="mb-3">
-                    <label for="{{ jugador.cardiovascular_form.R1.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.R1.label }}</label>
-                    {{ jugador.cardiovascular_form.R1 }}
-                    {% if jugador.cardiovascular_form.R1.help_text %}
-                        <small class="form-text text-muted">{{ jugador.cardiovascular_form.R1.help_text }}</small>
-                    {% endif %}
-                    {% for error in jugador.cardiovascular_form.R1.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                                    <!-- Campo 'R1' -->
+                                    <div class="mb-3">
+                                        <label for="{{ jugador.cardiovascular_form.R1.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.R1.label }}</label>
+                                        {{ jugador.cardiovascular_form.R1 }}
+                                        {% if jugador.cardiovascular_form.R1.help_text %}
+                                            <small class="form-text text-muted">{{ jugador.cardiovascular_form.R1.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in jugador.cardiovascular_form.R1.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
 
-                <!-- Campo 'R2' -->
-                <div class="mb-3">
-                    <label for="{{ jugador.cardiovascular_form.R2.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.R2.label }}</label>
-                    {{ jugador.cardiovascular_form.R2 }}
-                    {% if jugador.cardiovascular_form.R2.help_text %}
-                        <small class="form-text text-muted">{{ jugador.cardiovascular_form.R2.help_text }}</small>
-                    {% endif %}
-                    {% for error in jugador.cardiovascular_form.R2.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                                    <!-- Campo 'R2' -->
+                                    <div class="mb-3">
+                                        <label for="{{ jugador.cardiovascular_form.R2.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.R2.label }}</label>
+                                        {{ jugador.cardiovascular_form.R2 }}
+                                        {% if jugador.cardiovascular_form.R2.help_text %}
+                                            <small class="form-text text-muted">{{ jugador.cardiovascular_form.R2.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in jugador.cardiovascular_form.R2.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
 
-                <!-- Campo 'soplos' -->
-                <div class="mb-3">
-                    <label for="{{ jugador.cardiovascular_form.soplos.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.soplos.label }}</label>
-                    {{ jugador.cardiovascular_form.soplos }}
-                    {% if jugador.cardiovascular_form.soplos.help_text %}
-                        <small class="form-text text-muted">{{ jugador.cardiovascular_form.soplos.help_text }}</small>
-                    {% endif %}
-                    {% for error in jugador.cardiovascular_form.soplos.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                                    <!-- Campo 'soplos' -->
+                                    <div class="mb-3">
+                                        <label for="{{ jugador.cardiovascular_form.soplos.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.soplos.label }}</label>
+                                        {{ jugador.cardiovascular_form.soplos }}
+                                        {% if jugador.cardiovascular_form.soplos.help_text %}
+                                            <small class="form-text text-muted">{{ jugador.cardiovascular_form.soplos.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in jugador.cardiovascular_form.soplos.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
 
-                <!-- Campo 'tension_arterial' -->
-                <div class="mb-3">
-                    <label for="{{ jugador.cardiovascular_form.tension_arterial.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.tension_arterial.label }}</label>
-                    {{ jugador.cardiovascular_form.tension_arterial }}
-                    {% if jugador.cardiovascular_form.tension_arterial.help_text %}
-                        <small class="form-text text-muted">{{ jugador.cardiovascular_form.tension_arterial.help_text }}</small>
-                    {% endif %}
-                    {% for error in jugador.cardiovascular_form.tension_arterial.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                                    <!-- Campo 'tension_arterial' -->
+                                    <div class="mb-3">
+                                        <label for="{{ jugador.cardiovascular_form.tension_arterial.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.tension_arterial.label }}</label>
+                                        {{ jugador.cardiovascular_form.tension_arterial }}
+                                        {% if jugador.cardiovascular_form.tension_arterial.help_text %}
+                                            <small class="form-text text-muted">{{ jugador.cardiovascular_form.tension_arterial.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in jugador.cardiovascular_form.tension_arterial.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
 
-                <!-- Campo 'ruidos_agregados' -->
-                <div class="mb-3">
-                    <label for="{{ jugador.cardiovascular_form.ruidos_agregados.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.ruidos_agregados.label }}</label>
-                    {{ jugador.cardiovascular_form.ruidos_agregados }}
-                    {% if jugador.cardiovascular_form.ruidos_agregados.help_text %}
-                        <small class="form-text text-muted">{{ jugador.cardiovascular_form.ruidos_agregados.help_text }}</small>
-                    {% endif %}
-                    {% for error in jugador.cardiovascular_form.ruidos_agregados.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                                    <!-- Campo 'ruidos_agregados' -->
+                                    <div class="mb-3">
+                                        <label for="{{ jugador.cardiovascular_form.ruidos_agregados.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.ruidos_agregados.label }}</label>
+                                        {{ jugador.cardiovascular_form.ruidos_agregados }}
+                                        {% if jugador.cardiovascular_form.ruidos_agregados.help_text %}
+                                            <small class="form-text text-muted">{{ jugador.cardiovascular_form.ruidos_agregados.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in jugador.cardiovascular_form.ruidos_agregados.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
 
-                <!-- Campo 'observaciones' -->
-                <div class="mb-3">
-                    <label for="{{ jugador.cardiovascular_form.observaciones.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.observaciones.label }}</label>
-                    {{ jugador.cardiovascular_form.observaciones }}
-                    {% if jugador.cardiovascular_form.observaciones.help_text %}
-                        <small class="form-text text-muted">{{ jugador.cardiovascular_form.observaciones.help_text }}</small>
-                    {% endif %}
-                    {% for error in jugador.cardiovascular_form.observaciones.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                                    <!-- Campo 'observaciones' -->
+                                    <div class="mb-3">
+                                        <label for="{{ jugador.cardiovascular_form.observaciones.id_for_label }}" class="form-label">{{ jugador.cardiovascular_form.observaciones.label }}</label>
+                                        {{ jugador.cardiovascular_form.observaciones }}
+                                        {% if jugador.cardiovascular_form.observaciones.help_text %}
+                                            <small class="form-text text-muted">{{ jugador.cardiovascular_form.observaciones.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in jugador.cardiovascular_form.observaciones.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
 
-                <!-- Botón de submit -->
-                <button type="submit" class="btn btn-primary w-100">Guardar</button>
-            </form>
-        </div>
-    </div>
-</div>
+                                    <!-- Botón de submit -->
+                                    <button type="submit" class="btn btn-primary w-100">Guardar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
             
                     <!-- Laboratorio -->
@@ -648,7 +648,23 @@ body{
                         </div>
             
                     </div>
-
+                   
+                   
+                    <!-- Otros Exámenes Clínicos -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <button class="btn btn-secondary w-100" onclick="toggleForm('otros_examenes_clinicos_form')">Otros Exámenes Clínicos</button>
+                        </div>
+                        <div id="otros_examenes_clinicos_form" class="collapse" style="display:none;">
+                            <div class="card-body">
+                                <form method="POST" class="ajax-form" action="{% url 'otros_examenes_clinicos_view' jugador.id %}">
+                                    {% csrf_token %}
+                                    {{ jugador.otros_examenes_form.as_p }}
+                                    <button type="submit" class="btn btn-primary w-100">Guardar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Aprobación del Médico  -->
                         
                     <div class="card mb-3">
@@ -730,7 +746,7 @@ body{
                             </form>
                     </div>
                 {% endfor %}
-            
+               
                 <div class="container text-center mt-5">
                     <button onclick="location.href='{% url 'medico_home' %}'" class="btn btn-primary">Volver a Inicio</button>
                 </div>
@@ -740,4 +756,18 @@ body{
    
 </div>
 
+
+<script>
+    // Set the default date to today's date for the "Fecha de Llenado" field
+    document.addEventListener('DOMContentLoaded', function() {
+        const fechaDeLlenado = document.getElementById('fecha_de_llenado');
+        if (fechaDeLlenado && !fechaDeLlenado.value) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            fechaDeLlenado.value = `${yyyy}-${mm}-${dd}`;
+        }
+    });
+</script>
 {% endblock %}

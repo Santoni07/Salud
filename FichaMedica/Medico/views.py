@@ -3,12 +3,13 @@ from django.http import HttpResponse
 from django.views.generic import ListView
 from django.db.models import Q, Prefetch
 from django.db import transaction
+from weasyprint import HTML
 from persona.models import Jugador,JugadorCategoriaEquipo
 from RegistroMedico.models import RegistroMedico, AntecedenteEnfermedades
 from django.contrib.auth.mixins import LoginRequiredMixin
 from Medico.models import Medico
 from RegistroMedico.forms import *
-from weasyprint import HTML
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -90,6 +91,8 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
                 'registro_medico_form': None,
                 'estudio_medico_form': EstudioMedicoForm(),
                 'ergonometria_cargado': False,  # Agregar la comprobación para el electrocardiograma
+                'otros_examenes_form': OtrosExamenesClinicosForm(),
+                
             }
 
             # Registro médico y antecedentes
@@ -167,6 +170,9 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
                 jugador_info['torax_form'] = ToraxForm(
                     instance=Torax.objects.filter(ficha_medica=registro_medico).first()
                 )
+                jugador_info['otros_examenes_form'] = OtrosExamenesClinicosForm(
+                    instance=OtrosExamenesClinicos.objects.filter(ficha_medica=registro_medico).first()
+                )
             
             # Categorías y equipos asociados al jugador
             jugador_categoria_equipos = jugador.jugadorcategoriaequipo_set.all()
@@ -187,6 +193,13 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
 
     def post(self, request, *args, **kwargs):
         print("Datos del formulario:", request.POST)
+        #Comprobar si todos los formularios estan salvados 
+        form_saved = False
+        form_complete = False
+        
+        
+        
+        
         # Procesar el formulario de estudios médicos cuando el método sea POST
         form = EstudioMedicoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -280,6 +293,29 @@ def electro_esfuerzo_view(request, jugador_id):
         'electro_esfuerzo_form': electro_esfuerzo_form,
     })
 
+def otros_examenes_clinicos_view(request, jugador_id):
+    jugador = get_object_or_404(Jugador, id=jugador_id)
+    registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
+    if not registro_medico:
+        return HttpResponse("No se encontró el registro médico del jugador.", status=404)
+
+    otros_examenes = OtrosExamenesClinicos.objects.filter(ficha_medica=registro_medico).first()
+    if request.method == 'POST':
+        otros_examenes_form = OtrosExamenesClinicosForm(request.POST, instance=otros_examenes)
+        if otros_examenes_form.is_valid():
+            with transaction.atomic():
+                otros_examenes = otros_examenes_form.save(commit=False)
+                otros_examenes.ficha_medica = registro_medico
+                otros_examenes.save()
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"success": True, "message": "Formulario guardado exitosamente."})
+    else:
+        otros_examenes_form = OtrosExamenesClinicosForm(instance=otros_examenes)
+
+    return render(request, 'medico/medico_home.html', {
+        'jugador': jugador,
+        'otros_examenes_form': otros_examenes_form,
+    })
 
 def cardiovascular_view(request, jugador_id):
     # Obtener el jugador
@@ -468,6 +504,7 @@ def ficha_medica_views(request, jugador_id):
     laboratorio = Laboratorio.objects.filter(ficha_medica=registro_medico).first()
     oftalmologico = Oftalmologico.objects.filter(ficha_medica=registro_medico).first()
     torax = Torax.objects.filter(ficha_medica=registro_medico).first()
+    otros_examenes = OtrosExamenesClinicos.objects.filter(ficha_medica=registro_medico).first()
 
     # Convertir URLs relativas de imágenes en absolutas
     for categoria in jugador.jugadorcategoriaequipo_set.all():
@@ -535,6 +572,8 @@ def ficha_medica_views(request, jugador_id):
         'laboratorio_form': LaboratorioForm(instance=laboratorio),
         'oftalmologico_form': OftalmologicoForm(instance=oftalmologico),
         'torax_form': ToraxForm(instance=torax),
+        'otros_examenes_form': OtrosExamenesClinicosForm(instance=otros_examenes),
+        
         'registro_medico_form': registro_medico_form,
     }
 
@@ -553,106 +592,214 @@ def ficha_medica_views(request, jugador_id):
         content_to_pdf = html_content[content_start:content_end]
 
         html_string = f"""
-                        <!DOCTYPE html>
-                        <html lang="es">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Ficha Médica</title>
-                            <style>
-                                body {{
-                                    font-family: 'Arial', sans-serif;
-                                    font-size: 10px;
-                                    color: #333;
-                                    margin: 0;
-                                    padding: 0;
-                                }}
+                            <!DOCTYPE html>
+                            <html lang="es">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Ficha Médica</title>
+                                <style>
+                                    body {{
+                                        font-family: 'Arial', sans-serif;
+                                        font-size: 8px;
+                                        color: #333;
+                                        margin: 0px 0px 0px 0px;
+                                        padding: 0px 0px 0px 0px;
+                                    }}
+                                    /* Estilos del header */
+                                    header {{
+                                        display: flex;
+                                        align-items: center; /* Alinea verticalmente el contenido */
+                                    }}
+                                  
+                                    /* Estilo para el contenedor del logo */
+                                    header .logo {{
+                                        display: flex;
+                                        align-items: center; /* Alinea verticalmente el logo y el texto */
+                                        margin-right: auto; /* Empuja el logo hacia la izquierda */
+                                    }}
 
-                                /* Contenedor principal */
-                                .container {{
-                                    padding: 10px;
-                                    margin: 0 auto;
-                                    max-width: 760px;
-                                }}
+                                    /* Estilo para la imagen del logo */
+                                    header .logo img {{
+                                        width: 80px; /* Controla el tamaño del logo */
+                                    }}
 
-                                /* Encabezados */
-                                h1, h2, h3, h4 {{
-                                    color: #0056b3;
-                                    text-align: center;
-                                    margin: 5px 0;
-                                    font-weight: bold;
-                                    font-size: 14px;
-                                }}
+                                    /* Estilo para el título del sitio */
+                                    header .sitename {{
+                                        margin-left: 10px; /* Espacio entre el logo y el texto */
+                                        font-weight: bold; /* Hace el texto en negrita */
+                                        color: black; /* Pone el texto en negro */
+                                        text-decoration: none; /* Elimina cualquier subrayado */
+                                    }}
+                                      /* Estilo para el enlace (elimina subrayado) */
+                                    header .logo a {{
+                                        text-decoration: none; /* Elimina el subrayado en el enlace */
+                                    }}
 
-                                /* Tarjetas */
-                                .card {{
-                                    
-                                    margin-bottom: 10px;
-                                    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-                                }}
+                                    /* Contenedor principal */
+                                    .container {{
+                                        
+                                       
+                                        
+                                    }}
 
-                                .card-header {{
-                                    background-color: #f7f7f7;
+                                    /* Tipografía */
+                                    h1, h2, h3, h4 {{
+                                        color: {{ header_color|default:"#0056b3" }};
+                                        text-align: center;
+                                         margin: 0px 0px 0px 0px;
+                                        padding: 0px 0px 0px 0px;
+                                        font-weight: bold;
+                                        font-size: 10px;
+                                    }}
+
+                                    p {{
+                                        margin: 0;
+                                        line-height: 1.5;
+                                    }}
+
+                                    /* Tarjetas */
+                                    .card {{
+                                        border: 1px solid #ddd;
+                                        border-radius: 4px;
+                                        margin-bottom: 5px;
+                                        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+                                    }}
+
+                                    .card-header {{
+                                        background-color: {{ card_header_bg|default:"#f7f7f7" }};
+                                        border-bottom: 1px solid #ddd;
+                                        text-align: center;
+                                        font-size: 12px;
+                                        font-weight: bold;
+                                  
+                                        
+                                    }}
+
+                                      .card-body {{
+                                        
+                                        line-height: 1.4;
+                                        font-size: 10px;
+                                       
+                                        
+                                    }}
+
+                                    /* Filas y columnas */
+                                    .row {{
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        margin: 0 -8px;
+                                    }}
+
+                                    .col-md-6 {{
+                                        flex: 0 0 50%;
+                                        max-width: 50%;
+                                     
+                                        
+                                    }}
+
+                                    .col-md-4 {{
+                                        flex: 0 0 33.3333%;
+                                        max-width: 33.3333%;
+                                        
+                                    }}
+
+                                    .col-md-9 {{
+                                        flex: 0 0 75%;
+                                        ali
+                                        max-width: 75%;
+                                       
+                                        text-align: justify;
+                                    }}
+
+                                    .col-md-3 {{
+                                        flex: 0 0 25%;
+                                        max-width: 25%;
+                                      
+                                        
+                                    }}
+
+                                    /* Imágenes */
+                                    img {{
+                                        max-width: 80px;
+                                        height: auto;
+                                        display: block;
+                                        margin: 0 auto;
+                                    }}
+                                    .logo_header{{
+                                        max-width: 80px;
+                                        height: auto;
+                                        display: block;
+                                        margin: 0 auto; 
+                                    }}
+                                    /* Tablas */
+                                    table {{
+                                      
+                                        border-collapse: collapse;
                                    
-                                    text-align: center;
-                                    font-size: 12px;
-                                    font-weight: bold;
-                                }}
+                                        
+                                    }}
 
-                                .card-body {{
-                                    padding: 0px;
-                                    line-height: 1.4;
-                                    font-size: 10px;
-                                }}
+                                    table th, table td {{
+                                        border: 1px solid #ddd;
+                                        
+                                        text-align: left;
+                                        font-size: 10px;
+                                    }}
 
-                                /* Filas y columnas */
-                                .row {{
-                                    display: flex;
-                                    flex-wrap: wrap;
-                                    margin: 0 -8px;
-                                }}
+                                    table th {{
+                                        background-color: {{ table_header_bg|default:"#f1f1f1" }};
+                                        font-weight: bold;
+                                        padding: 0px;
+                                    }}
 
-                                .col-md-6, .col-md-4, .col-md-3, .col-md-9 {{
-                                    padding: 0px;
-                                    flex: 1;
-                                }}
+                                    /* Botones */
+                                    .btn {{
+                                        display: inline-block;
+                                        font-size: 10px;
+                                        font-weight: bold;
+                                        text-align: center;
+                                        color: white;
+                                        background-color: {{ btn_bg_color|default:"#007bff" }};
+                                        border: none;
+                                        padding: 3px 8px;
+                                        border-radius: 4px;
+                                        text-decoration: none;
+                                    }}
 
-                                /* Imágenes */
-                                img {{
-                                    max-width: 200px;
-                                    height: auto;
-                                 
-                                }}
+                                    .btn:hover {{
+                                        background-color: {{ btn_hover_bg|default:"#0056b3" }};
+                                    }}
+                                        .row {{
+                                            display: flex;
+                                            justify-content: center; /* Centra horizontalmente */
+                                            align-items: center; /* Centra verticalmente */
+                                             margin: 0px 0px 0px 0px;
+                                        padding: 0px 0px 0px 0px;
+                                        }}
 
-                                /* Tablas */
-                                table {{
-                                    width: 60%;
-                                    
-                                    margin-top: 10px;
-                                }}
+                                        .col-md-6 {{
+                                            text-align: center; /* Asegura que el contenido interno esté centrado */
+                                        }}
 
-                                table th, table td {{
-                                    
-                                    
-                                    text-align: left;
-                                    font-size: 10px;
-                                }}
+                                        /* Opcional: Estilo para la imagen de la firma */
+                                        .img-fluid {{
+                                            display: block;
+                                            margin: 0 auto; /* Centra la imagen horizontalmente */
+                                            max-width: 150px;
+                                            height: auto;
+                                        }}
 
-                                table th {{
-                                    background-color: #f1f1f1;
-                                    font-weight: bold;
-                                }}
-
-                                /* Resaltado */
-                                strong {{
-                                    color: black;
-                                }}
-                            </style>
-                        </head>
-                        <body>
-                            {content_to_pdf}
-                        </body>
-                        </html>
+                                        /* Opcional: Estilo para el texto */
+                                        p {{
+                                            margin: 0.5rem 0;
+                                        }}
+                                </style>
+                            </head>
+                            <body>
+                                {content_to_pdf}
+                            </body>
+                            </html>
                         """
         
 

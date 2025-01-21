@@ -110,7 +110,7 @@ class ElectroBasal(models.Model):
     arritmias = models.CharField(max_length=45, null=True, blank=True)
     ejeQRS = models.CharField(max_length=45, null=True, blank=True)
     trazadoNormal = models.CharField(max_length=45, null=True, blank=True)
-    observaciones = models.CharField(max_length=45, null=True, blank=True)
+    observaciones = models.CharField(max_length=45, null=True, blank=True,default='Sin observaciones')
     
     # Relación con el modelo RegistroMedico, renombrada a ficha_medica
     ficha_medica = models.OneToOneField(
@@ -129,7 +129,7 @@ class ElectroBasal(models.Model):
 
 class ElectroEsfuerzo(models.Model):
     idelectro_esfuerzo = models.AutoField(primary_key=True)
-    observaciones = models.CharField(max_length=200, null=True, blank=True)
+    observaciones = models.CharField(max_length=200, null=True, blank=True,default='Sin observaciones')
     
     # Relación con el modelo RegistroMedico, renombrada a ficha_medica
     ficha_medica = models.OneToOneField(
@@ -154,7 +154,7 @@ class Cardiovascular(models.Model):
     R1 = models.CharField(max_length=45, null=True, blank=True)
     tension_arterial = models.CharField(max_length=45, null=True, blank=True)
     R2 = models.CharField(max_length=45, null=True, blank=True)
-    observaciones = models.CharField(max_length=200, null=True, blank=True)
+    observaciones = models.CharField(max_length=200, null=True, blank=True,default='Sin observaciones')
     ruidos_agregados = models.CharField(max_length=45, null=True, blank=True)
     
     # Relación con el modelo RegistroMedico, renombrada a ficha_medica
@@ -174,12 +174,12 @@ class Cardiovascular(models.Model):
     
 class Laboratorio(models.Model):
     idlaboratorio = models.AutoField(primary_key=True)
-    citologico = models.CharField(max_length=45, null=True, blank=True)
-    orina = models.CharField(max_length=45, null=True, blank=True)
-    colesterol = models.CharField(max_length=45, null=True, blank=True)
-    uremia = models.CharField(max_length=45, null=True, blank=True)
-    glucemia = models.CharField(max_length=45, null=True, blank=True)
-    otros = models.CharField(max_length=45, null=True, blank=True)
+    citologico = models.CharField(max_length=45, null=True, blank=True,default='S/D')
+    orina = models.CharField(max_length=45, null=True, blank=True,default='S/D')
+    colesterol = models.CharField(max_length=45, null=True, blank=True,default='S/D')
+    uremia = models.CharField(max_length=45, null=True, blank=True,default='S/D')
+    glucemia = models.CharField(max_length=45, null=True, blank=True,default='S/D')
+    otros = models.CharField(max_length=45, null=True, blank=True,default='S/D')
     
     # Relación con el modelo RegistroMedico, renombrada a ficha_medica
     ficha_medica = models.OneToOneField(
@@ -198,7 +198,7 @@ class Laboratorio(models.Model):
     
 class Torax(models.Model):
     idtorax = models.AutoField(primary_key=True)
-    observaciones = models.CharField(max_length=200, null=True, blank=True)
+    observaciones = models.CharField(max_length=200, null=True, blank=True,default='Sin observaciones')
     
     # Relación con el modelo RegistroMedico, renombrada a ficha_medica
     ficha_medica = models.OneToOneField(
@@ -235,3 +235,14 @@ class Oftalmologico(models.Model):
 
     def __str__(self):
         return f"Oftalmológico {self.idoftalmologico} - Ficha Médica {self.ficha_medica.idfichaMedica}"
+    
+
+class OtrosExamenesClinicos(models.Model):
+    ficha_medica = models.OneToOneField(RegistroMedico, on_delete=models.CASCADE, related_name='otros_examenes')
+    respiratorio_observaciones = models.CharField(max_length=200, null=True, blank=True,default='Sin observaciones')
+    renal_observaciones = models.CharField(max_length=200, null=True, blank=True,default='Sin observaciones')
+    digestivo_observaciones = models.CharField(max_length=200, null=True, blank=True,default='Sin observaciones')
+    osteoarticular_observaciones = models.CharField(max_length=200, null=True, blank=True,default='Sin observaciones')
+
+    def __str__(self):
+        return f"Otros Exámenes Clínicos de {self.ficha_medica}"
