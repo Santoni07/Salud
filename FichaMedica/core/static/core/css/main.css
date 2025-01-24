@@ -786,3 +786,48 @@ table th.si-no-header {
 #loom-companion-mv3 {
   display: none !important;
 }
+
+/* Estilo general del wrapper */
+.wrapper-section {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+
+.wrapper-container {
+  display: flex;               /* Activar flexbox */
+  justify-content: space-between; /* Espaciado uniforme entre los bloques */
+  flex-wrap: wrap;             /* Permitir que los bloques se ajusten en pantallas pequeñas */
+  gap: 20px;                   /* Espaciado entre bloques */
+}
+
+/* Estilo de cada bloque */
+.block {
+  flex: 1 1 calc(25% - 20px);  /* Cada bloque ocupa el 25% menos el espacio del gap */
+  background-color: #fff;      /* Fondo blanco */
+  border: 1px solid #ddd;      /* Borde sutil */
+  border-radius: 5px;          /* Bordes redondeados */
+  padding: 20px;               /* Espaciado interno */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+  text-align: center;          /* Centrar contenido */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+}
+
+/* Efecto de zoom al pasar el ratón */
+.block:hover {
+  transform: scale(1.1); /* Aumentar tamaño al pasar el ratón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aumentar la sombra */
+}
+
+/* Diseño responsivo */
+@media (max-width: 768px) {
+  .block {
+      flex: 1 1 calc(50% - 20px); /* En pantallas medianas, cada bloque ocupa el 50% */
+  }
+}
+
+@media (max-width: 480px) {
+  .block {
+      flex: 1 1 100%; /* En pantallas pequeñas, cada bloque ocupa el 100% */
+  }
+}

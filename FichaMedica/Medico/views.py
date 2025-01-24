@@ -9,11 +9,11 @@ from RegistroMedico.models import RegistroMedico, AntecedenteEnfermedades
 from django.contrib.auth.mixins import LoginRequiredMixin
 from Medico.models import Medico
 from RegistroMedico.forms import *
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+
 
 class MedicoHomeView(LoginRequiredMixin, ListView):
     model = Jugador
@@ -437,7 +437,6 @@ def oftalmologico_view(request, jugador_id):
         'jugador': jugador,
         'oftalmologico_form': oftalmologico_form,
     })
-
 
 
 
