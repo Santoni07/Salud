@@ -40,12 +40,12 @@
 
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-            <a href="" class="logo d-flex align-items-center me-auto me-xl-0">
-                <img src="{% static 'core/img/tuapto.png' %}" alt="Logo" >
-                <h1 class="sitename">TU APTO</h1>
-            </a>
-        
-  
+              
+                <a href="" class="logo d-flex align-items-center me-auto me-xl-0">
+                    <img src="{% static 'core/img/tuapto.png' %}" alt="Logo" >
+                    <h1 class="sitename" >TU APTO</h1>    
+                </a>
+           
             <nav id="navmenu" class="navbar navbar-expand-lg navbar-light bg-white ">
                 <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,18 +95,9 @@
 
     {% block content %}{% endblock %}
     {% block publicidad %}{% endblock %}
-    <footer style="display: flex; justify-content: space-between; padding: 20px; background-color: #d9e6f2; color:#2c3e50;">
-        <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
-            <img src="{% static 'core/img/tuapto.png' %}" alt="Logo TU APTO" style="height: 40px; margin-right: 10px;">
-            <p style="margin: 0; text-align: center;">TU APTO</p>
-        </div>
-        <div style="border-left: 2px solid #fff; padding-left: 20px; flex-grow: 1;">
-            <p>©TU APTO 2025 - Todos los derechos reservados - Av. Cornelio Savedra 343 - CP5008 - CORDOBA</p>
-            <p>Email: CentroMedicoDR.GR@gmail.com / Contacto: 3513817760</p>
-        </div>
-    </footer>
-    
-    
+    {% block landingPage %} {% endblock %}
+  
+    {% block footer %}{% endblock %}
 
     <!-- Modal de confirmación de cierre de sesión -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">

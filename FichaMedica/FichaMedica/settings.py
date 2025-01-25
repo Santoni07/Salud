@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'publicidad',
     'persona',
     'Medico',
+    'InfoNovedades',
+    
 
     'Representate',
 

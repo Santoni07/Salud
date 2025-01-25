@@ -831,3 +831,68 @@ table th.si-no-header {
       flex: 1 1 100%; /* En pantallas pequeñas, cada bloque ocupa el 100% */
   }
 }
+/*Estilos para el options del home*/
+
+
+/* Media Queries */
+@media (max-width: 992px) {
+  #quienes-somos,
+  #quiero-ser-prestador {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  #quienes-somos img,
+  #quiero-ser-prestador img {
+      width: 100%;
+      height: auto;
+  }
+
+  form {
+      max-width: 90%;
+  }
+
+  #quienes-somos div,
+  #quiero-ser-prestador div {
+      text-align: center;    
+  }
+  #quiero-ser-prestador div{
+    margin-top: 30px;
+  }
+  #quienes-somos h2,
+  #quiero-ser-prestador h2 {
+      text-align: center;
+      font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #quienes-somos h2,
+  #quiero-ser-prestador h2 {
+      font-size: 1.2rem;
+  }
+
+  #quienes-somos p,
+  #quiero-ser-prestador p {
+      font-size: 1rem;
+  }
+
+  form {
+      padding: 15px;
+      box-shadow: none;
+  }
+
+  button {
+      width: 100%;
+  }
+}
+/* Media querys para footer*/
+@media (max-width: 768px) {
+  #footer {
+      flex-direction: column;
+      text-align: center;
+  }
+  #footer > div {
+      margin-bottom: 20px;
+  }
+}
