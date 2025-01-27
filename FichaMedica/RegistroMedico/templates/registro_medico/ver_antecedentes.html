@@ -62,10 +62,10 @@
         .btn:hover {
             background-color: #004494;
         }
-        .btn.modificar {
+        .btn.btn-success {
             background-color: #28a745;
         }
-        .btn.modificar:hover {
+        .btn.btn-success:hover {
             background-color: #218838;
         }
         @media (max-width: 600px) {
@@ -128,14 +128,16 @@
         </div>
     </div>
 
-    <div class="text-center">
-        <a href="{% url 'menu_jugador' %}" class="btn2">Volver al Menú del Jugador</a>
-    </div>
+     <!-- Contenedor de los botones -->
+<div class="d-flex justify-content-center mt-4">
+    <a href="{% url 'menu_jugador' %}" class="btn btn-primary me-2">Volver al Menú del Jugador</a>
+    <!-- Agregamos 'me-2' para separar los botones -->
     {% if not ficha_medica.consentimiento_persona %}
-    <a href="{% url 'registroMedico:modificar_antecedente' antecedente.idantecedente_enfermedades %}" class="btn2 btn-success">
+    <a href="{% url 'registroMedico:modificar_antecedente' antecedente.idantecedente_enfermedades %}" class="btn btn-success">
         Modificar Antecedente
     </a>
     {% endif %}
+</div>
     
 
 
