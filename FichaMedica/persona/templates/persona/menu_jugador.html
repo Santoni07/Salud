@@ -357,61 +357,92 @@
             
           
             
+          <!-- DATOS -->
+<div class="container p-3 bg-white shadow rounded" id="datosPersonales" style="position: relative; top: 50px">
+  <h1 class="text-center text-primary fw-bold">Datos Personales</h1>
 
-            <div class="container  p-3 bg-white shadow rounded" id="datosPersonales" style="position: relative; top: 50px">
-              <h1 class="text-center text-primary fw-bold">Datos Personales</h1>
-            
-              {% if profile %}
-                <div class="card border-info shadow-sm">
-                  <div class="card-header bg-info text-white fw-bold">
-                    Información Personal
-                  </div>
-                  <div class="card-body">
-                    <!-- Tabla para pantallas grandes -->
-                    <div class="table-responsive d-none d-md-block">
-                      <table class="table table-bordered align-middle">
-                        <tbody>
-                          <tr><th class="bg-light">Nombre</th><td>{{ profile.nombre }}</td></tr>
-                          <tr><th class="bg-light">Apellido</th><td>{{ profile.apellido }}</td></tr>
-                          <tr><th class="bg-light">DNI</th><td>{{ profile.dni }}</td></tr>
-                          <tr><th class="bg-light">Fecha de Nacimiento</th><td>{{ profile.fecha_nacimiento }}</td></tr>
-                          <tr><th class="bg-light">Email</th><td>{{ profile.email }}</td></tr>
-                          <tr><th class="bg-light">Teléfono</th><td>{{ persona.telefono }}</td></tr>
-                          <tr><th class="bg-light">Teléfono Alternativo</th><td>{{ persona.telefono_alternativo }}</td></tr>
-                          <tr><th class="bg-light">Dirección</th><td>{{ persona.direccion }}</td></tr>
-                          <tr><th class="bg-light">Obra Social</th><td>{{ persona.jugador.cobertura_medica }}</td></tr>
-                          <tr><th class="bg-light">Número de Afiliado</th><td>{{ persona.jugador.numero_afiliado }}</td></tr>
-                        </tbody>
-                      </table>
-                    </div>
-            
-                    <!-- Tarjetas individuales para dispositivos pequeños -->
-                    <div class="d-block d-md-none">
-                      <div class="card border-info shadow-sm mb-3">
-                        <div class="card-body">
-                          <p><strong>Nombre:</strong> {{ profile.nombre }}</p>
-                          <p><strong>Apellido:</strong> {{ profile.apellido }}</p>
-                          <p><strong>DNI:</strong> {{ profile.dni }}</p>
-                          <p><strong>Fecha de Nacimiento:</strong> {{ profile.fecha_nacimiento }}</p>
-                          <p><strong>Email:</strong> {{ profile.email }}</p>
-                          <p><strong>Teléfono:</strong> {{ persona.telefono }}</p>
-                          <p><strong>Teléfono Alternativo:</strong> {{ persona.telefono_alternativo }}</p>
-                          <p><strong>Dirección:</strong> {{ persona.direccion }}</p>
-                          <p><strong>Obra Social:</strong> {{ persona.jugador.cobertura_medica }}</p>
-                          <p><strong>Número de Afiliado:</strong> {{ persona.jugador.numero_afiliado }}</p>
-                        </div>
-                      </div>
-                    </div>
-            
-                    <div class="text-center mt-4">
-                      <a href="{% url 'modificar_perfil' %}" class="btn btn-success btn-lg">Modificar</a>
-                    </div>
-                  </div>
-                </div>
-              {% else %}
-                <p class="text-center text-muted">No tienes datos personales cargados.</p>
-              {% endif %}
+  {% if profile %}
+    <div class="card border-info shadow-sm">
+      <div class="card-header bg-info text-white fw-bold text-center">
+        Información Personal
+      </div>
+      <div class="card-body">
+        <!-- Tabla para pantallas grandes -->
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Nombre</th>
+                <td class="text-center">{{ profile.nombre }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Apellido</th>
+                <td class="text-center">{{ profile.apellido }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">DNI</th>
+                <td class="text-center">{{ profile.dni }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Fecha de Nacimiento</th>
+                <td class="text-center">{{ profile.fecha_nacimiento }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Email</th>
+                <td class="text-center">{{ profile.email }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Teléfono</th>
+                <td class="text-center">{{ persona.telefono }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Teléfono Alternativo</th>
+                <td class="text-center">{{ persona.telefono_alternativo }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Dirección</th>
+                <td class="text-center">{{ persona.direccion }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Obra Social</th>
+                <td class="text-center">{{ persona.jugador.cobertura_medica }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light text-nowrap text-center">Número de Afiliado</th>
+                <td class="text-center">{{ persona.jugador.numero_afiliado }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tarjetas individuales para dispositivos pequeños -->
+        <div class="d-block d-md-none">
+          <div class="card border-info shadow-sm mb-3">
+            <div class="card-body">
+              <p class="fw-bold text-primary"><span class="text-dark">Nombre:</span> {{ profile.nombre }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">Apellido:</span> {{ profile.apellido }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">DNI:</span> {{ profile.dni }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">Fecha de Nacimiento:</span> {{ profile.fecha_nacimiento }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">Email:</span> {{ profile.email }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">Teléfono:</span> {{ persona.telefono }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">Teléfono Alternativo:</span> {{ persona.telefono_alternativo }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">Dirección:</span> {{ persona.direccion }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">Obra Social:</span> {{ persona.jugador.cobertura_medica }}</p>
+              <p class="fw-bold text-primary"><span class="text-dark">Número de Afiliado:</span> {{ persona.jugador.numero_afiliado }}</p>
             </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="{% url 'modificar_perfil' %}" class="btn btn-success btn-lg">Modificar</a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-center text-muted">No tienes datos personales cargados.</p>
+  {% endif %}
+</div>
+
             
       </main>
   </div>

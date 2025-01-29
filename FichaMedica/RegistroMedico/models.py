@@ -94,6 +94,7 @@ class EstudiosMedico(models.Model):
         return f'{self.get_tipo_estudio_display()} - {self.ficha_medica.jugador.persona.profile.nombre} {self.ficha_medica.jugador.persona.profile.apellido}'
 
     # Señal para eliminar el archivo al eliminar el objeto
+
 @receiver(post_delete, sender=EstudiosMedico)
 def eliminar_archivo_post_delete(sender, instance, **kwargs):
     if instance.archivo:
