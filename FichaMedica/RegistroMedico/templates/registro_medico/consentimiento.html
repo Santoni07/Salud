@@ -1,107 +1,93 @@
-
 {% extends 'core/base.html' %}
 {% load static %}
-{% load widget_tweaks %}
-
 {% block content %}
+<style>
+body {
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    
+}
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('{% static "core/img/medico_home.jpg" %}') no-repeat center center fixed;
+    background-size: cover;
+    opacity: 0.4; 
+    z-index: -1; 
+}
+h3 {
+    font-size: 2rem;
+    color: #0066FF;
+    text-align: center;
+    margin-bottom: 20px;
+}
+</style>
 
-<main class="px-3" style="position: relative; min-height: 100vh; width: 100%; margin: 0; padding: 0;">
-    <style>
-      main::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('{% static "core/img/medico_home.jpg" %}') no-repeat center center;
-        background-size: cover;
-        opacity: 0.4; /* Controla la transparencia de la imagen */
-        z-index: -1; /* Coloca la imagen detrás del contenido */
-        }
-        
-        h3 {
-            font-size: 2rem; /* Tamaño grande */
-            color: #0066FF; /* Azul brillante */
-            /*font-weight: bold;  Fuente gruesa */
-            text-align: center; /* Centrado */
-            margin-bottom: 20px; /* Espacio inferior */
-        }
+<div class="container mt-5" style="padding: 40px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Consentimiento</h3>
+                    <p class="text-justify">El que suscribe <strong class="font-size-lg">{{ profile.nombre }} {{ profile.apellido }}</strong> con D.N.I <strong class="font-size-lg">{{ profile.dni }}</strong>,</p>
+                    
+                    {% for categoria_equipo in categorias_equipo %}
+                        <p class="text-justify">
+                            Acepto integrar el equipo <strong class="font-size-lg">{{ categoria_equipo.categoria_equipo.equipo.nombre }}</strong> que participará en el torneo <strong class="font-size-lg">{{ categoria_equipo.categoria_equipo.categoria.torneo }}</strong> bajo la categoría <strong class="font-size-lg">{{ categoria_equipo.categoria_equipo.categoria }}</strong>, tanto para actuar como jugador titular y/o suplente y realizar todas las actividades derivadas de tal participación.
+                        </p>
+                    {% empty %}
+                        <p class="text-justify">No hay categorías de equipo disponibles.</p>
+                    {% endfor %}
+                    
+                    <div class="form-group text-center d-flex flex-column flex-md-row justify-content-center mt-4">
+                        {% if ficha_medica.consentimiento_persona %}
+                            <a href="{% url 'menu_jugador' %}" class="btn btn-primary btn-lg mb-2 mb-md-0 me-md-2 w-100 w-md-auto">Volver al Menú</a>
+                        {% else %}
+                            <a href="{% url 'menu_jugador' %}" class="btn btn-danger btn-lg mb-2 mb-md-0 me-md-2 w-100 w-md-auto">Cancelar</a>
+                            <button type="button" class="btn btn-success btn-lg w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#confirmModal">Aceptar</button>
+                        {% endif %}
+                    </div>
 
-   
-    </style>
-    <div style="position: relative; z-index: 1; ">
-                    <div class="container mt-5" style="padding: 40px;" >
-                        <div class="row justify-content-center">
-                            <div class="col-md-8">
-                                <div class="card shadow-sm">
-                                    <div class="card-body">
-                                        <h3 class="text-center mb-4">Consentimiento</h3>
-                                        <p class="text-justify">El que suscribe <strong class="font-size-lg">{{ profile.nombre }} {{ profile.apellido }}</strong> con D.N.I <strong class="font-size-lg">{{ profile.dni }}</strong>,</p>
-                                        
-                                        {% for categoria_equipo in categorias_equipo %}
-                                            <p class="text-justify">
-                                                Acepto integrar el equipo <strong class="font-size-lg">{{ categoria_equipo.categoria_equipo.equipo.nombre }}</strong> que participará en el torneo <strong class="font-size-lg">{{ categoria_equipo.categoria_equipo.categoria.torneo }}</strong> bajo la categoría <strong class="font-size-lg">{{ categoria_equipo.categoria_equipo.categoria }}</strong>, 
-                                                tanto para actuar como jugador titular y/o suplente y realizar todas las actividades derivadas de tal 
-                                                participación, responsabilizándome por la veracidad de la información vertida en la presente.
-                                            </p>
-                                            <p class="text-justify">
-                                                Asimismo, manifiesto con carácter de declaración jurada que los datos completados en Antecedentes de Enfermedades son datos válidos.
-                                            </p>
-                                        {% empty %}
-                                            <p class="text-justify">No hay categorías de equipo disponibles.</p>
-                                        {% endfor %}
-
-                                        <div class="form-group text-center d-flex flex-column flex-md-row justify-content-center mt-4">
-                                            {% if ficha_medica.consentimiento_persona %}
-                                                <!-- Botón para "Volver al Menú" -->
-                                                <a href="{% url 'menu_jugador' %}" class="btn btn-primary btn-lg mb-2 mb-md-0 me-md-2 w-100 w-md-auto">Volver al Menú</a>
-                                            {% else %}
-                                                <!-- Botón "Cancelar" -->
-                                                <a href="{% url 'menu_jugador' %}" class="btn btn-danger btn-lg mb-2 mb-md-0 me-md-2 w-100 w-md-auto">Cancelar</a>
-                                                <!-- Botón "Aceptar" que abre el modal -->
-                                                <button type="button" class="btn btn-success btn-lg w-100 w-md-auto" data-toggle="modal" data-target="#confirmModal">Aceptar</button>
-                                            {% endif %}
-                                        </div>
-
-                                        <!-- Modal --> 
-                                        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="confirmModalLabel">Confirmar Aceptación</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <strong>Al aceptar, no podrá modificar sus antecedentes de enfermedades.</strong>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                        <form method="post" action="{% url 'registroMedico:consentimiento' pk=ficha_medica.pk %}">
-                                                            {% csrf_token %}
-                                                            <button type="submit" class="btn btn-success">Aceptar</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> 
-
-                                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmModalLabel">Confirmar Aceptación</h5>
+                                   
+                                   
+                                </div>
+                                <div class="modal-body">
+                                    <strong>Al aceptar, no podrá modificar sus antecedentes de enfermedades.</strong>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'registroMedico:consentimiento' pk=ficha_medica.pk %}" class="btn btn-danger ">Cancelar</a>
+                                    <form method="post" action="{% url 'registroMedico:consentimiento' pk=ficha_medica.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success">Aceptar</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
     </div>
-</main>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</div>
+
+<!-- Cargar jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Cargar Bootstrap Bundle JS (incluye Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
 {% endblock %}
-
-
-
 
 {% comment %} {% extends 'core/base.html' %}
 {% load static %}

@@ -157,7 +157,7 @@ class ActualizarConsentimientoView(UpdateView):
 
     
     
-class CargarEstudioView(LoginRequiredMixin, CreateView):
+""" class CargarEstudioView(LoginRequiredMixin, CreateView):
     model = EstudiosMedico
     form_class = EstudioMedicoForm
     template_name = 'registro_medico/cargar_estudios.html'
@@ -177,6 +177,29 @@ class CargarEstudioView(LoginRequiredMixin, CreateView):
 
         return context 
 
+ """
+
+
+class CargarEstudioView(LoginRequiredMixin, CreateView):
+    model = EstudiosMedico
+    form_class = EstudioMedicoForm
+    template_name = 'registro_medico/cargar_estudios.html'
+
+    def form_valid(self, form):
+        # Obtener la ficha médica a partir de la URL o sesión
+        ficha_medica = RegistroMedico.objects.get(idfichaMedica=self.kwargs['ficha_id'])
+
+        form.instance.ficha_medica = ficha_medica  # Asocia el estudio a la ficha médica
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['ficha_medica'] = get_object_or_404(RegistroMedico, idfichaMedica=self.kwargs['ficha_id'])
+        return context
+
+    def get_success_url(self):
+        # Cambiar al nombre correcto del patrón de URL
+        return reverse_lazy('registroMedico:ver_estudios', kwargs={'ficha_medica_id': self.kwargs['ficha_id']})
 
 class EstudiosMedicoListView(ListView):
     model = EstudiosMedico

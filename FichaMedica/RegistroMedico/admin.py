@@ -19,7 +19,7 @@ class AntecedenteEnfermedadesAdmin(admin.ModelAdmin):
 # Registro de RegistroMedico en el admin
 @admin.register(RegistroMedico)
 class RegistroMedicoAdmin(admin.ModelAdmin):
-    list_display = ('idfichaMedica', 'jugador', 'torneo', 'estado', 'fecha_creacion', 'fecha_caducidad')
+    list_display = ('idfichaMedica', 'jugador', 'torneo', 'estado', 'fecha_creacion', 'fecha_caducidad','consentimiento_persona')
     search_fields = ('idfichaMedica', 'jugador__nombre', 'torneo__nombre')
     list_filter = ('estado', 'torneo', 'fecha_creacion')
     # Agrega más filtros o campos de búsqueda según tu necesidad
