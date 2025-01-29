@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 SESSION_COOKIE_AGE = 900  # 15 minutos
 # Tiempo máximo de inactividad antes de que la sesión se cierre automáticamente (en segundos)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Esto hace que la sesión se cierre al cerrar el navegador
-
+SESSION_SAVE_EVERY_REQUEST = False  # No renueva la expiración de la sesión en cada solicitud
 
 # Application definition
 
@@ -185,7 +185,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 
 LOGOUT_REDIRECT_URL = 'home'  # URL a la que redirige después de hacer logout
-LOGIN_URL = 'login'  # Página de login si no está autenticado
+LOGIN_URL = '/account/login/'  # Página de login si no está autenticado
 
 
 

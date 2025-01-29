@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 from django.http import JsonResponse
 from django.contrib.auth import logout
+from django.utils.timezone import now
 
 from django.utils import timezone
 from django.contrib.sessions.models import Session
@@ -49,15 +50,31 @@ def user_login(request):
 @login_required
 def dashboard(request):
     return redirect('persona/registrar')
+from django.contrib.sessions.models import Session
+from django.utils.timezone import now
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def check_session(request):
-    # Verificar si la sesión ha expirado
-    session = Session.objects.get(session_key=request.session.session_key)
-    if timezone.now() - session.get_decoded().get('_session_expiry') > timezone.timedelta(seconds=900):
-        return JsonResponse({'session_expired': True})
-    else:
+    try:
+        session_key = request.session.session_key
+        if not session_key:
+            # La sesión no existe
+            return JsonResponse({'session_expired': True})
+
+        # Obtener la sesión actual
+        session = Session.objects.get(session_key=session_key)
+        
+        # Verificar si la sesión ha expirado
+        if session.expire_date < now():
+            return JsonResponse({'session_expired': True})
+
         return JsonResponse({'session_expired': False})
+    except Session.DoesNotExist:
+        # Si la sesión no existe o es inválida
+        return JsonResponse({'session_expired': True}, status=401)
+
 
 def register(request):
     if request.method == 'POST':
