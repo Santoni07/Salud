@@ -96,13 +96,6 @@ class ElectroBasalForm(forms.ModelForm):
 
 
 
-class ElectroEsfuerzoForm(forms.ModelForm):
-    class Meta:
-        model = ElectroEsfuerzo
-        fields = ['observaciones']
-        widgets = {
-            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-        }
 
 
 class CardiovascularForm(forms.ModelForm):
@@ -146,6 +139,13 @@ class LaboratorioForm(forms.ModelForm):
 class ToraxForm(forms.ModelForm):
     class Meta:
         model = Torax
+        fields = ['observaciones']
+        widgets = {
+            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+class ElectroEsfuerzoForm(forms.ModelForm):
+    class Meta:
+        model = ElectroEsfuerzo
         fields = ['observaciones']
         widgets = {
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),

@@ -15,46 +15,46 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 
 
-class MedicoHomeView(LoginRequiredMixin, ListView):
+""" class MedicoHomeView(LoginRequiredMixin, ListView):
     model = Jugador
     template_name = 'medico/medico_home.html'
     context_object_name = 'jugadores'
 
-    def get_queryset(self):
-        queryset = super().get_queryset().select_related('persona__profile').prefetch_related(
-            Prefetch(
-                'jugadorcategoriaequipo_set',
-                queryset=JugadorCategoriaEquipo.objects.select_related(
-                    'categoria_equipo__categoria__torneo', 'categoria_equipo__equipo'
+            
+            queryset = super().get_queryset().select_related('persona__profile').prefetch_related(
+                Prefetch(
+                    'jugadorcategoriaequipo_set',
+                    queryset=JugadorCategoriaEquipo.objects.select_related(
+                        'categoria_equipo__categoria__torneo', 'categoria_equipo__equipo'
+                    )
                 )
             )
-        )
 
-        # Obtener el término de búsqueda
-        search_query = self.request.GET.get('search_query', '').strip()
+            # Obtener el término de búsqueda
+            search_query = self.request.GET.get('search_query', '').strip()
 
-        # Verificar si el término de búsqueda es un DNI
-        if search_query:
-            if search_query.isdigit() and len(search_query) == 8:
-                # Filtrar según el DNI
-                queryset = queryset.filter(
-                    Q(persona__profile__dni__icontains=search_query)
-                )
-            elif search_query.isalpha():
-                # Búsqueda por nombre o apellido
-                queryset = queryset.filter(
-                    Q(persona__profile__nombre__icontains=search_query) |
-                    Q(persona__profile__apellido__icontains=search_query)
-                )
+            # Verificar si el término de búsqueda es un DNI
+            if search_query:
+                if search_query.isdigit() and len(search_query) == 8:
+                    # Filtrar según el DNI
+                    queryset = queryset.filter(
+                        Q(persona__profile__dni__icontains=search_query)
+                    )
+                elif search_query.isalpha():
+                    # Búsqueda por nombre o apellido
+                    queryset = queryset.filter(
+                        Q(persona__profile__nombre__icontains=search_query) |
+                        Q(persona__profile__apellido__icontains=search_query)
+                    )
+                else:
+                    # Mostrar un mensaje de error si no cumple con el formato de DNI
+                    messages.error(self.request, "El valor ingresado para la busqueda por DNI es incorrecto. Debe contener exactamente 8 números.")
+                    return queryset.none()
             else:
-                # Mostrar un mensaje de error si no cumple con el formato de DNI
-                messages.error(self.request, "El valor ingresado para la busqueda por DNI es incorrecto. Debe contener exactamente 8 números.")
+                # Retornar un conjunto vacío si no se realiza ninguna búsqueda
                 return queryset.none()
-        else:
-            # Retornar un conjunto vacío si no se realiza ninguna búsqueda
-            return queryset.none()
 
-        return queryset
+            return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -223,9 +223,179 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
             print("Error : " ,form.errors)
             messages.error(request, "Hubo un error al cargar el estudio médico.")
             return redirect('medico_home')
+         """
+         
+
+class MedicoHomeView(LoginRequiredMixin, ListView):
+    model = Jugador
+    template_name = 'medico/medico_home.html'
+    context_object_name = 'jugadores'
+
+    def get_queryset(self):
+        # 🔹 Inicialmente, la lista está vacía
+        queryset = Jugador.objects.all()
+
+        # Obtener los valores de búsqueda desde la URL
+        search_dni = self.request.GET.get('search_dni', '').strip()
+        search_name = self.request.GET.get('search_name', '').strip()
+
+        print("🔍 Búsqueda DNI:", search_dni)  # 🔹 Depuración: Ver si se recibe el DNI
+        print("🔍 Búsqueda Nombre:", search_name)  # 🔹 Depuración: Ver si se recibe el nombre
+
+        # Si no hay búsqueda, devolver una lista vacía
+        if not search_dni and not search_name:
+            print("🔹 No se ingresaron datos de búsqueda. Retornando lista vacía.")
+            return Jugador.objects.none()
+
+        # Filtrar por DNI
+        if search_dni:
+            if search_dni.isdigit() and len(search_dni) == 8:
+                queryset = queryset.filter(persona__profile__dni__icontains=search_dni)
+            else:
+                messages.error(self.request, "El DNI ingresado debe contener exactamente 8 números.")
+                return Jugador.objects.none()
+
+        # 🔹 Filtrar por Nombre o Apellido (Búsqueda flexible)
+        if search_name:
+            palabras = search_name.strip().split()  # Dividir el texto en palabras
+            consulta = Q()
+
+            if len(palabras) == 1:
+                # Si el usuario ingresa solo una palabra, buscar en nombre o apellido
+                consulta = Q(persona__profile__nombre__icontains=palabras[0]) | Q(persona__profile__apellido__icontains=palabras[0])
+
+            elif len(palabras) >= 2:
+                # Si ingresa dos palabras, primero filtrar por la primera y luego por la segunda
+                primer_termino = palabras[0]
+                segundo_termino = palabras[1]
+
+                # Buscar primero por nombre y luego por apellido, o viceversa
+                consulta = (Q(persona__profile__nombre__icontains=primer_termino) & Q(persona__profile__apellido__icontains=segundo_termino)) | \
+                        (Q(persona__profile__apellido__icontains=primer_termino) & Q(persona__profile__nombre__icontains=segundo_termino))
+
+            queryset = queryset.filter(consulta)
+
+        # 🔹 Depuración: Mostrar los jugadores encontrados
+        jugadores_encontrados = queryset.values_list('id', 'persona__profile__nombre', 'persona__profile__apellido')
         
+        if jugadores_encontrados:
+            print("✅ Jugadores encontrados:")
+            for jugador in jugadores_encontrados:
+                print(f"   - ID: {jugador[0]}, Nombre: {jugador[1]}, Apellido: {jugador[2]}")
+        else:
+            print("⚠️ No se encontraron jugadores con los criterios de búsqueda.")
+
+        return queryset
         
-def electro_basal_view(request, jugador_id):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Pasar los valores actuales de búsqueda al contexto para mantenerlos en los inputs
+        context['search_dni'] = self.request.GET.get('search_dni', '')
+        context['search_name'] = self.request.GET.get('search_name', '')
+
+        try:
+            context['medico'] = Medico.objects.get(profile=self.request.user.profile)
+        except Medico.DoesNotExist:
+            context['medico'] = None
+
+        jugadores_info = []
+        for jugador in context['jugadores']:
+            jugador_info = {
+                'id': jugador.id,
+                'edad': jugador.persona.profile.edad,
+                'dni': jugador.persona.profile.dni,
+                'nombre': jugador.persona.profile.nombre,
+                'apellido': jugador.persona.profile.apellido,
+                'direccion': jugador.persona.direccion,
+                'telefono': jugador.persona.telefono,
+                'grupo_sanguineo': jugador.grupo_sanguineo,
+                'cobertura_medica': jugador.cobertura_medica,
+                'numero_afiliado': jugador.numero_afiliado,
+                'categorias_equipo': [],
+                'antecedentes': [],
+                'estudios_medicos': [],
+                'electro_basal_form': ElectroBasalForm(),
+                'electro_esfuerzo_form': ElectroEsfuerzoForm(),
+                'cardiovascular_form': CardiovascularForm(),
+                'laboratorio_form': LaboratorioForm(),
+                'oftalmologico_form': OftalmologicoForm(),
+                'torax_form': ToraxForm(),
+                'registro_medico_form': RegistroMedicoForm(),
+                'estudio_medico_form': EstudioMedicoForm(),
+                'ergonometria_cargado': False,  # Agregar la comprobación para el electrocardiograma
+                'otros_examenes_form': OtrosExamenesClinicosForm(),
+                
+            }
+
+            registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
+            if registro_medico:
+                jugador_info['registro_medico_estado'] = registro_medico.estado
+
+                estudios_medicos = EstudiosMedico.objects.filter(ficha_medica=registro_medico, tipo_estudio='ERGOMETRIA')
+                jugador_info['ergonometria_cargado'] = estudios_medicos.exists()
+
+                estudios_medicos = EstudiosMedico.objects.filter(ficha_medica=registro_medico)
+                jugador_info['estudios_medicos'] = [
+                    {
+                        'pk': estudio.pk,
+                        'tipo': estudio.get_tipo_estudio_display(),
+                        'archivo': estudio.archivo.url if estudio.archivo else None,
+                        'observaciones': estudio.observaciones,
+                    } for estudio in estudios_medicos
+                ]
+
+                antecedentes = AntecedenteEnfermedades.objects.filter(idfichaMedica=registro_medico)
+                jugador_info['antecedentes'] = [
+                    {
+                        'fue_operado': ant.fue_operado,
+                        'toma_medicacion': ant.toma_medicacion,
+                        'estuvo_internado': ant.estuvo_internado,
+                        'sufre_hormigueos': ant.sufre_hormigueos,
+                        'es_diabetico': ant.es_diabetico,
+                        'es_asmatico': ant.es_amatico,
+                        'es_alergico': ant.es_alergico,
+                        'alerg_observ': ant.alerg_observ,
+                        'antecedente_epilepsia': ant.antecedente_epilepsia,
+                        'desviacion_columna': ant.desviacion_columna,
+                        'dolor_cintura': ant.dolor_cintira,
+                        'fracturas': ant.fracturas,
+                        'dolores_articulares': ant.dolores_articulares,
+                        'falta_aire': ant.falta_aire,
+                        'traumatismos_craneo': ant.tramatismos_craneo,
+                        'dolor_pecho': ant.dolor_pecho,
+                        'perdida_conocimiento': ant.perdida_conocimiento,
+                        'presion_arterial': ant.presion_arterial,
+                        'muerte_subita_familiar': ant.muerte_subita_familiar,
+                        'enfermedad_cardiaca_familiar': ant.enfermedad_cardiaca_familiar,
+                        'soplo_cardiaco': ant.soplo_cardiaco,
+                        'abstenerce_competencia': ant.abstenerce_competencia,
+                        'antecedentes_coronarios_familiares': ant.antecedentes_coronarios_familiares,
+                        'fumar_hipertension_diabetes': ant.fumar_hipertension_diabetes,
+                        'consumo_cocaina_anabolicos': ant.consumo_cocaina_anabolicos,
+                        'cca_observaciones': ant.cca_observaciones,
+                    }
+                    for ant in antecedentes
+                ]
+
+            jugador_categoria_equipos = jugador.jugadorcategoriaequipo_set.all()
+            jugador_info['categorias_equipo'] = [
+                {
+                    'nombre_categoria': jce.categoria_equipo.categoria.nombre,
+                    'nombre_equipo': jce.categoria_equipo.equipo.nombre,
+                    'torneo': jce.categoria_equipo.categoria.torneo.nombre
+                } for jce in jugador_categoria_equipos
+            ]
+
+            jugadores_info.append(jugador_info)
+
+        context['jugadores_info'] = jugadores_info
+        context['pk'] = self.kwargs.get('pk')
+        return context
+
+        
+""" def electro_basal_view(request, jugador_id):
     jugador = get_object_or_404(Jugador, id=jugador_id)
     registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
     
@@ -266,8 +436,57 @@ def electro_basal_view(request, jugador_id):
         'form_saved': form_saved,
         'form_complete': form_complete,
     })
+ """
 
 
+def electro_basal_view(request, jugador_id):
+    jugador = get_object_or_404(Jugador, id=jugador_id)
+    registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
+
+    if not registro_medico:
+        return JsonResponse({"error": "No se encontró el registro médico del jugador."}, status=404)
+
+
+    electro_basal = ElectroBasal.objects.filter(ficha_medica=registro_medico).first()
+    form_saved = False
+    form_complete = False
+   
+    if request.method == 'POST':
+        electro_basal_form = ElectroBasalForm(request.POST, instance=electro_basal)
+        if electro_basal_form.is_valid():
+            with transaction.atomic():
+                electro_basal = electro_basal_form.save(commit=False)
+
+                # Asegurar que esté asociado con la ficha médica
+                if not electro_basal.ficha_medica_id:
+                    electro_basal.ficha_medica = registro_medico
+
+                electro_basal.save()
+                form_saved = True
+
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"success": True, "message": "✅ Formulario guardado exitosamente."})
+
+    else:
+        # 🔹 Inicializar el formulario con la instancia existente de ElectroBasal
+        electro_basal_form = ElectroBasalForm(instance=electro_basal)
+
+        # Verificar si el formulario está completo
+        if electro_basal:
+            electro_basal_form = ElectroBasalForm(instance=electro_basal)
+            form_complete = all([
+                getattr(electro_basal, field.name, None)
+                for field in electro_basal_form.visible_fields()
+            ])
+        else:
+            electro_basal_form = ElectroBasalForm()
+
+    return render(request, 'medico/medico_home.html', {
+        'jugador': jugador,
+        'electro_basal_form': electro_basal_form,
+        'form_saved': form_saved,
+        'form_complete': form_complete,
+    })
 
 def electro_esfuerzo_view(request, jugador_id):
     jugador = get_object_or_404(Jugador, id=jugador_id)
