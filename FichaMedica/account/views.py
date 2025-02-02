@@ -11,49 +11,64 @@ from django.utils.timezone import now
 from django.utils import timezone
 from django.contrib.sessions.models import Session
 from django.contrib import messages
+from persona.models import Persona, Jugador, JugadorCategoriaEquipo  
+
+@login_required
+def dashboard(request):
+    return redirect('persona/registrar')
+
 @never_cache
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            cd = form.cleaned_data  # Limpio los datos
-            user = authenticate(request, username=cd['email'], password=cd['password'])  # Autenticación por email
+            cd = form.cleaned_data
+            user = authenticate(request, username=cd['email'], password=cd['password'])
 
-            if user is not None:  # Si el usuario existe y está activo
+            if user is not None:
                 if user.is_active:
                     login(request, user)
+                    profile = user.profile
+                    print("Usuario autenticado:", profile.rol)
 
-                    # Obtener el perfil del usuario y imprimir el rol
-                    profile = user.profile  # Asegúrate de que el usuario tenga un perfil relacionado
-                    print("Usuario autenticado:", profile.rol)  # Imprimir el rol del perfil
+                    # ✅ Verificar si el registro ya está completo
+                    try:
+                        persona = Persona.objects.get(profile=profile)
+                        jugador = Jugador.objects.get(persona=persona)
+                        equipo_categoria = JugadorCategoriaEquipo.objects.filter(jugador=jugador).exists()
 
-                    # Redirigir según el rol del usuario
-                    if profile.rol == 'medico':  # Verifica si el rol es médico
-                        return redirect('medico_home')  # Cambia a la URL adecuada para médicos
-                    elif profile.rol == 'general':  # Verifica si el rol es jugador
-                        return redirect('registrar_persona')  # Cambia a la URL adecuada para jugadores
+                        registro_completo = all([
+                            persona.direccion,
+                            persona.telefono,
+                            jugador.grupo_sanguineo,
+                            equipo_categoria
+                        ])
+                    except (Persona.DoesNotExist, Jugador.DoesNotExist):
+                        registro_completo = False
+                    print("Rol del usuario : ", profile.rol)
+                    # 🔄 Redirección condicional
+                    if profile.rol == 'medico':
+                        return redirect('medico_home')
+                    elif profile.rol == 'general':
+                        if registro_completo:
+                            return redirect('menu_jugador')  # Si está completo, va al menú del jugador
+                        else:
+                            return redirect('registrar_persona')  # Si falta algo, sigue en registrar_persona
                     elif profile.rol == 'representante':
                         return redirect('representante_home')
                     elif profile.rol == 'jugador':
                         return redirect('menu_jugador')
                     else:
-                        return redirect('home')  # Redirigir a una página predeterminada si no es médico ni jugador
+                        return redirect('home')
+
                 else:
                     return HttpResponse('El usuario no está activo')
             else:
-                messages.error(request, 'Usuario o contraseña incorrectos intente nuevmente.')
-                return redirect('login')  # Redirige al login
+                messages.error(request, 'Usuario o contraseña incorrectos. Intente nuevamente.')
+                return redirect('login')
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
-
-@login_required
-def dashboard(request):
-    return redirect('persona/registrar')
-from django.contrib.sessions.models import Session
-from django.utils.timezone import now
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def check_session(request):

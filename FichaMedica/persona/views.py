@@ -14,7 +14,7 @@ from RegistroMedico.models import AntecedenteEnfermedades, RegistroMedico
 from .forms import *
 from .models import *
 
-def registrar_persona(request):
+""" def registrar_persona(request):
     profile = request.user.profile
 
     # Intentamos obtener la Persona asociada al profile del usuario
@@ -52,21 +52,21 @@ def registrar_persona(request):
     else:
         equipo_categoria_completo = False
 
-    # Verificamos si todos los campos de persona y jugador están completos
+    # Verificamos si todos los campos obligatorios están completos
     if campos_completos and campos_jugador_completos and equipo_categoria_completo:
-        return redirect('menu_jugador')
+        return redirect('menu_jugador')  # Redirigir si ya está completo
 
     # Manejo de los formularios
     if request.method == 'POST':
-        # Formulario con instancia de persona
+        # Formularios para persona y jugador
         form_persona = PersonaForm(request.POST, instance=persona)
         form_jugador = JugadorForm(request.POST, instance=jugador) if jugador else JugadorForm(request.POST)
 
         if form_persona.is_valid() and form_jugador.is_valid():
             # Guardar la persona sin crear una nueva si ya existe
             persona_guardada = form_persona.save(commit=False)
-            persona_guardada.profile = profile  # Asegurarse de que esté asignado el profile
-            persona_guardada.save()  # Aquí se actualiza, no se crea una nueva
+            persona_guardada.profile = profile
+            persona_guardada.save()
 
             # Guardar el jugador y asignar la persona
             jugador_guardado = form_jugador.save(commit=False)
@@ -84,93 +84,71 @@ def registrar_persona(request):
         'persona': persona,
         'profile': profile,
         'jugador': jugador,
-        'jugador_equipo_categoria': jugador_equipo_categoria,  # Añadir jugador_equipo_categoria al contexto
-    }
-    return render(request, 'persona/registrar_persona.html', context)
-
-
-
-
-
-""" def registrar_persona(request):
-    profile = request.user.profile
-
-    # Intentamos obtener la Persona asociada al profile del usuario
-    persona, created = Persona.objects.get_or_create(profile=profile)
-
-    if created:
-        print(f"Persona creada: {persona}")
-    else:
-        print(f"Persona encontrada: {persona}")
-
-    # Verificamos si todos los campos importantes de la persona están completos
-    campos_completos = all([
-        persona.direccion,
-        persona.telefono,
-        persona.telefono_alternativo,
-    ])
-
-    # Intentamos obtener el jugador asociado a la persona
-    try:
-        jugador = Jugador.objects.get(persona=persona)
-        campos_jugador_completos = all([
-            jugador.grupo_sanguineo,
-            jugador.cobertura_medica,
-            jugador.numero_afiliado,
-        ])
-    except Jugador.DoesNotExist:
-        jugador = None  # Si no hay jugador, se establece en None
-        campos_jugador_completos = False
-
-    # Intentamos obtener la relación de equipo y categoría asociada al jugador
-    jugador_equipo_categoria = None
-    if jugador:
-        try:
-            jugador_equipo_categoria = JugadorCategoriaEquipo.objects.get(jugador=jugador)
-            equipo_categoria_completo = True
-        except JugadorCategoriaEquipo.DoesNotExist:
-            equipo_categoria_completo = False
-    else:
-        equipo_categoria_completo = False
-
-    # Verificamos si todos los campos de persona, jugador y equipo-categoría están completos
-    if campos_completos and campos_jugador_completos and equipo_categoria_completo:
-        return redirect('menu_jugador')
-
-    # Manejo de los formularios
-    if request.method == 'POST':
-        # Formulario con instancia de persona
-        form_persona = PersonaForm(request.POST, instance=persona)
-        form_jugador = JugadorForm(request.POST, instance=jugador) if jugador else JugadorForm(request.POST)
-
-        if form_persona.is_valid() and form_jugador.is_valid():
-            # Guardar la persona sin crear una nueva si ya existe
-            persona_guardada = form_persona.save(commit=False)
-            persona_guardada.profile = profile  # Asegurarse de que esté asignado el profile
-            persona_guardada.save()  # Aquí se actualiza, no se crea una nueva
-
-            # Guardar el jugador y asignar la persona
-            jugador_guardado = form_jugador.save(commit=False)
-            jugador_guardado.persona = persona_guardada
-            jugador_guardado.save()
-
-            return redirect('seleccionar_categoria_equipo')  # Redirigir al siguiente paso tras guardar
-    else:
-        form_persona = PersonaForm(instance=persona)
-        form_jugador = JugadorForm(instance=jugador) if jugador else JugadorForm()
-
-    context = {
-        'form_persona': form_persona,
-        'form_jugador': form_jugador,
-        'persona': persona,
-        'profile': profile,
-        'jugador': jugador,
-        'jugador_equipo_categoria': jugador_equipo_categoria,  # Añadir jugador_equipo_categoria al contexto
+        'jugador_equipo_categoria': jugador_equipo_categoria,
     }
     return render(request, 'persona/registrar_persona.html', context)
 
 
  """
+
+
+
+def registrar_persona(request):
+    profile = request.user.profile
+
+    # Obtener o crear la Persona asociada al perfil
+    persona, created = Persona.objects.get_or_create(profile=profile)
+    jugador = Jugador.objects.filter(persona=persona).first()
+
+    if request.method == 'POST':
+        form_persona = PersonaForm(request.POST, instance=persona)
+        form_jugador = JugadorForm(request.POST, instance=jugador) if jugador else JugadorForm(request.POST)
+
+        if form_persona.is_valid() and form_jugador.is_valid():
+            # Guardar Persona
+            persona_guardada = form_persona.save(commit=False)
+            persona_guardada.profile = profile
+            persona_guardada.save()
+
+            # Guardar Jugador
+            jugador_guardado = form_jugador.save(commit=False)
+            jugador_guardado.persona = persona_guardada
+            jugador_guardado.save()
+
+            messages.success(request, "¡Datos guardados correctamente!")
+
+            # Redirigir al siguiente paso
+            return redirect('seleccionar_categoria_equipo')
+
+        else:
+            # Si hay errores en el formulario
+            messages.error(request, "Por favor, corrige los errores en el formulario.")
+
+    else:
+        form_persona = PersonaForm(instance=persona)
+        form_jugador = JugadorForm(instance=jugador) if jugador else JugadorForm()
+
+    # Verificar si ya está completo
+    registro_completo = all([
+        persona.direccion,
+        persona.telefono,
+        jugador and jugador.grupo_sanguineo,
+        JugadorCategoriaEquipo.objects.filter(jugador=jugador).exists() if jugador else False
+    ])
+
+    if registro_completo:
+        return redirect('menu_jugador')
+
+    context = {
+        'form_persona': form_persona,
+        'form_jugador': form_jugador,
+        'persona': persona,
+        'profile': profile,
+        'jugador': jugador,
+    }
+    return render(request, 'persona/registrar_persona.html', context)
+
+
 def fetch_categorias(request, torneo_id):
     try:
         print(f"Torneo seleccionado: {torneo_id}")
