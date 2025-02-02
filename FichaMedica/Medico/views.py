@@ -1,10 +1,10 @@
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views.generic import ListView
-from django.db.models import Q, Prefetch
+from django.db.models import Q
 from django.db import transaction
 from weasyprint import HTML
-from persona.models import Jugador,JugadorCategoriaEquipo
+from persona.models import Jugador
 from RegistroMedico.models import RegistroMedico, AntecedenteEnfermedades
 from django.contrib.auth.mixins import LoginRequiredMixin
 from Medico.models import Medico
@@ -13,6 +13,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+
+from django.urls import reverse
 
 
 """ class MedicoHomeView(LoginRequiredMixin, ListView):
@@ -288,6 +290,8 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
         return queryset
         
 
+    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -378,6 +382,28 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
                     }
                     for ant in antecedentes
                 ]
+                 # Instanciar formularios con datos existentes, si están presentes
+                jugador_info['electro_basal_form'] = ElectroBasalForm(
+                    instance=ElectroBasal.objects.filter(ficha_medica=registro_medico).first()
+                )
+                jugador_info['electro_esfuerzo_form'] = ElectroEsfuerzoForm(
+                    instance=ElectroEsfuerzo.objects.filter(ficha_medica=registro_medico).first()
+                )
+                jugador_info['cardiovascular_form'] = CardiovascularForm(
+                    instance=Cardiovascular.objects.filter(ficha_medica=registro_medico).first()
+                )
+                jugador_info['laboratorio_form'] = LaboratorioForm(
+                    instance=Laboratorio.objects.filter(ficha_medica=registro_medico).first()
+                )
+                jugador_info['oftalmologico_form'] = OftalmologicoForm(
+                    instance=Oftalmologico.objects.filter(ficha_medica=registro_medico).first()
+                )
+                jugador_info['torax_form'] = ToraxForm(
+                    instance=Torax.objects.filter(ficha_medica=registro_medico).first()
+                )
+                jugador_info['otros_examenes_form'] = OtrosExamenesClinicosForm(
+                    instance=OtrosExamenesClinicos.objects.filter(ficha_medica=registro_medico).first()
+                )
 
             jugador_categoria_equipos = jugador.jugadorcategoriaequipo_set.all()
             jugador_info['categorias_equipo'] = [
@@ -392,9 +418,41 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
 
         context['jugadores_info'] = jugadores_info
         context['pk'] = self.kwargs.get('pk')
-        return context
-
         
+        return context
+    def post(self, request, *args, **kwargs):
+        print("Datos del formulario:", request.POST)
+
+        form_saved = False
+        form_complete = False
+        jugador_id = request.POST.get('jugador_id')
+
+        form = EstudioMedicoForm(request.POST, request.FILES)
+        if form.is_valid():
+            estudio_medico = form.save(commit=False)
+
+            jugador = get_object_or_404(Jugador, id=jugador_id)
+            registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
+
+            if registro_medico:
+                estudio_medico.ficha_medica = registro_medico
+                estudio_medico.save()
+                messages.success(request, "✅ Estudio médico cargado exitosamente.")
+                form_saved = True
+            else:
+                messages.error(request, "❌ No se encontró el registro médico del jugador.")
+        else:
+            print("Error:", form.errors)
+            messages.error(request, "❌ Hubo un error al cargar el estudio médico.")
+
+        # Asegurarse de que el queryset esté definido
+        self.object_list = self.get_queryset()
+
+        context = self.get_context_data()
+        context['form_saved'] = form_saved
+        context['jugador_id'] = jugador_id  # 🔑 Enviar el ID del jugador al contexto
+
+        return render(request, 'medico/medico_home.html', context)
 """ def electro_basal_view(request, jugador_id):
     jugador = get_object_or_404(Jugador, id=jugador_id)
     registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
@@ -698,8 +756,16 @@ def ficha_medica_views(request, jugador_id):
     jugador = get_object_or_404(Jugador, id=jugador_id)
     registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
 
-    # Obtener el rol del usuario logueado
-    rol_usuario = request.user.profile.rol if hasattr(request.user, 'profile') else None
+        # Verificar si el usuario tiene un perfil de médico asociado
+    try:
+        medico = Medico.objects.get(profile=request.user.profile)
+        rol_usuario = medico.profile.rol
+    except Medico.DoesNotExist:
+        rol_usuario = None  # En caso de que no sea un médico
+
+    print("Rol del usuario logueado:", rol_usuario)
+    
+    
     if not registro_medico:
         return HttpResponse("No se encontró el registro médico del jugador.", status=404)
 
