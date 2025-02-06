@@ -1102,3 +1102,39 @@ def ficha_medica_views(request, jugador_id):
     }
     return render(request, 'medico/medico_views.html', context)
 
+def eliminar_ficha_medica(request, jugador_id):
+    print("🔹 Iniciando eliminación de ficha médica...")
+
+    # Obtener la ficha médica del jugador
+    registro_medico = RegistroMedico.objects.filter(jugador__id=jugador_id).first()
+
+    if not registro_medico:
+        print("⚠️ No se encontró la ficha médica del jugador.")
+        messages.error(request, "No se encontró la ficha médica del jugador.")
+        return redirect('medico_home')
+
+    print("✅ Ficha médica encontrada:", registro_medico)
+
+    # Obtener el perfil del médico
+    medico = Medico.objects.filter(profile=request.user.profile).first()
+
+    if not medico:
+        print("⚠️ No se encontró el perfil del médico asociado.")
+        messages.error(request, "No se encontró el perfil del médico asociado.")
+        return redirect('medico_home')
+
+    rol_usuario = medico.profile.rol
+    print("✅ Médico identificado:", medico)
+    print("✅ Rol del médico:", rol_usuario)
+
+    # Verificar permisos
+    if rol_usuario.strip().lower() in ['médico', 'medico', 'administrador']:
+        print("✅ Permiso concedido. Eliminando ficha médica...")
+        registro_medico.delete()
+        messages.success(request, "La ficha médica ha sido eliminada correctamente.")
+        print("✅ Ficha médica eliminada con éxito.")
+        return redirect('medico_home')
+    else:
+        print("⛔ No tienes permisos para eliminar esta ficha médica.")
+        messages.error(request, "No tienes permisos para eliminar esta ficha médica.")
+        return redirect('medico_home')

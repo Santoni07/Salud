@@ -177,10 +177,10 @@
                                 <div class="card-header bg-info text-white text-center p-4 w-100">
                                     <h2 class="mb-0 fw-bold">Lista de Jugadores</h2>
                                 </div>
-                                <table class="table table-bordered align-middle">
-                                    <thead class="table-light text-center">
-                                        <tr class="text-center">
-                                            <th scope="col" class="fw-bold">Apellido</th>
+                                <table class="table table-bordered align-middle" >
+                                    <thead class="table-light text-center "  >
+                                        <tr class="text-center" >
+                                            <th scope="col" class="fw-bold" style="font-size: 16px" >Apellido</th>
                                             <th scope="col" class="fw-bold">Nombre</th>
                                             <th scope="col" class="fw-bold">DNI</th>
                                             <th scope="col" class="fw-bold">Estado del Apto</th>
@@ -236,7 +236,12 @@
                                                         {% elif jugador.registro_medico_estado == "PENDIENTE" %}
                                                             <a href="#" class="btn btn-warning me-2 btn-seleccionar" onclick="toggleSearchMenu()" data-id="{{ jugador.id }}">Modificar</a>
                                                         {% elif jugador.registro_medico_estado == "RECHAZADO" or jugador.registro_medico_estado == "APROBADA" %}
-                                                            <a href="{% url 'ficha_medica' jugador.id %}" class="btn btn-success me-2" target="_blank">Ver</a>
+                                                        <div class="d-flex justify-content-center gap-2">
+                                                            <a href="{% url 'ficha_medica' jugador.id %}" class="btn btn-success px-4 py-2" target="_blank">Ver</a>
+                                                            <a href="{% url 'eliminar_ficha_medica' jugador.id %}" class="btn btn-danger px-4 py-2" 
+                                                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta ficha médica?');">Eliminar</a>
+                                                        </div>
+                                                        
                                                         {% endif %}
                                                     </div>
                                                 </td>
