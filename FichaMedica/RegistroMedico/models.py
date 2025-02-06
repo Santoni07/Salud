@@ -70,7 +70,17 @@ class RegistroMedico(models.Model):
 
     def __str__(self):
         return f"{self.jugador.persona.profile.nombre} {self.jugador.persona.profile.apellido}"
+    @staticmethod
+    def eliminar_fichas_vencidas():
+        hoy = now().date()  # Obtiene la fecha actual
+        fichas_vencidas = RegistroMedico.objects.filter(fecha_caducidad__lt=hoy)
 
+        if fichas_vencidas.exists():
+            print(f"Eliminando {fichas_vencidas.count()} fichas médicas vencidas...")
+            fichas_vencidas.delete()
+            
+            
+            
 class EstudiosMedico(models.Model):
     TIPO_ESTUDIO = [
         ('ORINA', 'Análisis de Orina'),
