@@ -161,6 +161,13 @@
                     <div class="alert alert-success ficha-medica aprobada"  style="margin: 0px;">
                       <strong>Estado del Apto Médico:</strong> {{ ficha_medica.estado }}
                       <strong>- Fecha de Caducidad:</strong> {{ ficha_medica.fecha_caducidad }}
+                      {% for categoria_equipo in jugador_info.categorias_equipo %}
+                      
+                      <strong>- Torneo:</strong> {{ categoria_equipo.torneo }}
+                  
+                         
+                    {% endfor %}
+                     
                     </div>
                   </li>
                 </ul>
