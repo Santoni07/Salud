@@ -77,7 +77,10 @@ else:
     EMAIL_HOST_PASSWORD = 'tu_contraseña'
     DEFAULT_FROM_EMAIL = 'tu_email@gmail.com'
 
-
+AUTHENTICATION_BACKENDS = [
+    'account.backends.EmailBackend',  
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

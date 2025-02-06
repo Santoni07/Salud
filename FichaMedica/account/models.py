@@ -39,6 +39,12 @@ class Profile(models.Model):
             self.nombre = self.nombre.capitalize()
         if self.apellido:
             self.apellido = self.apellido.capitalize()
+        
+         # Sincronizar el email del Profile con el del User
+        if self.user and self.user.email != self.email:
+            self.user.email = self.email
+            self.user.save()
+        
         super().save(*args, **kwargs)  # Llamar al método save del modelo base
     def __str__(self):
         return f"{self.nombre} {self.apellido} - {self.rol}"
