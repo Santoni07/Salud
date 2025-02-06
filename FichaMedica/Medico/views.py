@@ -1107,7 +1107,6 @@ def eliminar_ficha_medica(request, jugador_id):
 
     # Obtener la ficha médica del jugador
     registro_medico = RegistroMedico.objects.filter(jugador__id=jugador_id).first()
-
     if not registro_medico:
         print("⚠️ No se encontró la ficha médica del jugador.")
         messages.error(request, "No se encontró la ficha médica del jugador.")
@@ -1117,22 +1116,30 @@ def eliminar_ficha_medica(request, jugador_id):
 
     # Obtener el perfil del médico
     medico = Medico.objects.filter(profile=request.user.profile).first()
-
     if not medico:
         print("⚠️ No se encontró el perfil del médico asociado.")
         messages.error(request, "No se encontró el perfil del médico asociado.")
         return redirect('medico_home')
 
     rol_usuario = medico.profile.rol
-    print("✅ Médico identificado:", medico)
-    print("✅ Rol del médico:", rol_usuario)
+    print(f"✅ Médico identificado: {medico}")
+    print(f"🔍 Valor exacto de rol_usuario: {repr(rol_usuario)}")
 
     # Verificar permisos
     if rol_usuario.strip().lower() in ['médico', 'medico', 'administrador']:
-        print("✅ Permiso concedido. Eliminando ficha médica...")
+        print("✅ Permiso concedido. Registrando eliminación...")
+
+        # Guardar el registro en el modelo de EliminacionFichaMedica
+        EliminacionFichaMedica.objects.create(
+            jugador=f"{registro_medico.jugador.persona.profile.apellido} {registro_medico.jugador.persona.profile.nombre}",
+            medico=f"{medico.profile.apellido} {medico.profile.nombre}",
+            fecha_eliminacion=now()
+        )
+
+        # Eliminar la ficha médica
         registro_medico.delete()
-        messages.success(request, "La ficha médica ha sido eliminada correctamente.")
-        print("✅ Ficha médica eliminada con éxito.")
+        messages.success(request, "La ficha médica ha sido eliminada correctamente y registrada en el historial.")
+        print("✅ Ficha médica eliminada con éxito y registrada.")
         return redirect('medico_home')
     else:
         print("⛔ No tienes permisos para eliminar esta ficha médica.")

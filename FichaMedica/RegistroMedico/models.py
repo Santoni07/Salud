@@ -5,7 +5,7 @@ from persona.models import  Torneo ,Jugador
 from Medico.models import Medico
 from django.dispatch import receiver
 from django.db.models.signals import post_delete, pre_save
-
+from django.utils.timezone import now
 
 
 class AntecedenteEnfermedades(models.Model):
@@ -247,3 +247,12 @@ class OtrosExamenesClinicos(models.Model):
 
     def __str__(self):
         return f"Otros Exámenes Clínicos de {self.ficha_medica}"
+    
+    
+class EliminacionFichaMedica(models.Model):
+    jugador = models.CharField(max_length=255)  # Nombre del jugador
+    medico = models.CharField(max_length=255)  # Nombre del médico que eliminó la ficha
+    fecha_eliminacion = models.DateTimeField(default=now)  # Fecha de eliminación
+
+    def __str__(self):
+        return f"Ficha eliminada de {self.jugador} por {self.medico} el {self.fecha_eliminacion.strftime('%d-%m-%Y %H:%M')}"
