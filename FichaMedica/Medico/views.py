@@ -291,7 +291,6 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
         
 
     
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -328,18 +327,25 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
                 'torax_form': ToraxForm(),
                 'registro_medico_form': RegistroMedicoForm(),
                 'estudio_medico_form': EstudioMedicoForm(),
-                'ergonometria_cargado': False,  # Agregar la comprobación para el electrocardiograma
+                'ergonometria_cargado': False,
+                'electrocardiograma_cargado': False,  # Agregando la verificación del electrocardiograma
                 'otros_examenes_form': OtrosExamenesClinicosForm(),
-                
             }
 
             registro_medico = RegistroMedico.objects.filter(jugador=jugador).first()
             if registro_medico:
                 jugador_info['registro_medico_estado'] = registro_medico.estado
 
-                estudios_medicos = EstudiosMedico.objects.filter(ficha_medica=registro_medico, tipo_estudio='ERGOMETRIA')
-                jugador_info['ergonometria_cargado'] = estudios_medicos.exists()
+                # Verificar si los estudios médicos han sido cargados
+                jugador_info['ergonometria_cargado'] = EstudiosMedico.objects.filter(
+                    ficha_medica=registro_medico, tipo_estudio='ERGOMETRIA'
+                ).exists()
 
+                jugador_info['electrocardiograma_cargado'] = EstudiosMedico.objects.filter(
+                    ficha_medica=registro_medico, tipo_estudio='ELECTRO'
+                ).exists()
+
+                # Obtener todos los estudios médicos y mapearlos
                 estudios_medicos = EstudiosMedico.objects.filter(ficha_medica=registro_medico)
                 jugador_info['estudios_medicos'] = [
                     {
@@ -350,6 +356,7 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
                     } for estudio in estudios_medicos
                 ]
 
+                # Obtener antecedentes médicos del jugador
                 antecedentes = AntecedenteEnfermedades.objects.filter(idfichaMedica=registro_medico)
                 jugador_info['antecedentes'] = [
                     {
@@ -382,7 +389,8 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
                     }
                     for ant in antecedentes
                 ]
-                 # Instanciar formularios con datos existentes, si están presentes
+
+                # Instanciar formularios con datos existentes
                 jugador_info['electro_basal_form'] = ElectroBasalForm(
                     instance=ElectroBasal.objects.filter(ficha_medica=registro_medico).first()
                 )
@@ -405,6 +413,7 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
                     instance=OtrosExamenesClinicos.objects.filter(ficha_medica=registro_medico).first()
                 )
 
+            # Obtener las categorías y equipos del jugador
             jugador_categoria_equipos = jugador.jugadorcategoriaequipo_set.all()
             jugador_info['categorias_equipo'] = [
                 {
@@ -420,6 +429,7 @@ class MedicoHomeView(LoginRequiredMixin, ListView):
         context['pk'] = self.kwargs.get('pk')
         
         return context
+
     def post(self, request, *args, **kwargs):
         print("Datos del formulario:", request.POST)
 
