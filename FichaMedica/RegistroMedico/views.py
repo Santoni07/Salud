@@ -218,6 +218,7 @@ class EliminarEstudioView(DeleteView):
     def get_success_url(self):
        ficha_medica_id = self.object.ficha_medica.idfichaMedica
        return reverse_lazy('registroMedico:ver_estudios', kwargs={'ficha_medica_id': ficha_medica_id})
+
 class EliminarEstudioMedicoView(DeleteView):
     model = EstudiosMedico
     template_name = 'registro_medico/eliminar_estudio_confirm.html'
