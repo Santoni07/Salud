@@ -5,7 +5,7 @@ from persona.models import  Torneo ,Jugador
 from Medico.models import Medico
 from django.dispatch import receiver
 from django.db.models.signals import post_delete, pre_save
-
+from django.utils.timezone import now
 
 
 class AntecedenteEnfermedades(models.Model):
@@ -70,7 +70,17 @@ class RegistroMedico(models.Model):
 
     def __str__(self):
         return f"{self.jugador.persona.profile.nombre} {self.jugador.persona.profile.apellido}"
+    @staticmethod
+    def eliminar_fichas_vencidas():
+        hoy = now().date()  # Obtiene la fecha actual
+        fichas_vencidas = RegistroMedico.objects.filter(fecha_caducidad__lt=hoy)
 
+        if fichas_vencidas.exists():
+            print(f"Eliminando {fichas_vencidas.count()} fichas médicas vencidas...")
+            fichas_vencidas.delete()
+            
+            
+            
 class EstudiosMedico(models.Model):
     TIPO_ESTUDIO = [
         ('ORINA', 'Análisis de Orina'),
@@ -94,6 +104,7 @@ class EstudiosMedico(models.Model):
         return f'{self.get_tipo_estudio_display()} - {self.ficha_medica.jugador.persona.profile.nombre} {self.ficha_medica.jugador.persona.profile.apellido}'
 
     # Señal para eliminar el archivo al eliminar el objeto
+
 @receiver(post_delete, sender=EstudiosMedico)
 def eliminar_archivo_post_delete(sender, instance, **kwargs):
     if instance.archivo:
@@ -246,3 +257,12 @@ class OtrosExamenesClinicos(models.Model):
 
     def __str__(self):
         return f"Otros Exámenes Clínicos de {self.ficha_medica}"
+    
+    
+class EliminacionFichaMedica(models.Model):
+    jugador = models.CharField(max_length=255)  # Nombre del jugador
+    medico = models.CharField(max_length=255)  # Nombre del médico que eliminó la ficha
+    fecha_eliminacion = models.DateTimeField(default=now)  # Fecha de eliminación
+
+    def __str__(self):
+        return f"Ficha eliminada de {self.jugador} por {self.medico} el {self.fecha_eliminacion.strftime('%d-%m-%Y %H:%M')}"

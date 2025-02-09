@@ -11,6 +11,19 @@ class PersonaForm(forms.ModelForm):
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono_alternativo': forms.TextInput(attrs={'class': 'form-control'}),
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Hacer opcional el campo teléfono alternativo
+        self.fields['telefono_alternativo'].required = False
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if not instance.telefono_alternativo:
+            instance.telefono_alternativo = 'S/D'
+        if commit:
+            instance.save()
+        return instance
+
+
 
 class JugadorForm(forms.ModelForm):
     class Meta:
@@ -20,6 +33,21 @@ class JugadorForm(forms.ModelForm):
             'cobertura_medica': forms.TextInput(attrs={'class': 'form-control'}),
             'numero_afiliado': forms.TextInput(attrs={'class': 'form-control'}),
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Hacer opcionales los campos de cobertura médica y número de afiliado
+        self.fields['cobertura_medica'].required = False
+        self.fields['numero_afiliado'].required = False
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if not instance.cobertura_medica:
+            instance.cobertura_medica = 'S/D'
+        if not instance.numero_afiliado:
+            instance.numero_afiliado = 'S/D'
+        if commit:
+            instance.save()
+        return instance
+    
 
 class TorneoForm(forms.ModelForm):
     class Meta:

@@ -48,6 +48,7 @@ class RepresentanteHomeView(LoginRequiredMixin, View):
                 print("Jugadores obtenidos:", jugadores)
 
             elif filter_type == 'categoria' and filter_category:
+                print("Categoría recibida:", filter_category)
                 jugadores = []  # Limpia antes de ejecutar el filtro
                 categoria_id = int(filter_category)
                 print("Categoría ID:", categoria_id)

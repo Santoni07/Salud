@@ -77,7 +77,7 @@
         const direccion = document.getElementById('{{ form_persona.direccion.id_for_label }}').value.trim();
         const telefono = document.getElementById('{{ form_persona.telefono.id_for_label }}').value.trim();
         const grupoSanguineo = document.getElementById('{{ form_jugador.grupo_sanguineo.id_for_label }}').value.trim();
-
+    
         if (!direccion || !telefono || !grupoSanguineo) {
             event.preventDefault();
             alert('Por favor, complete los campos obligatorios: Dirección, Teléfono y Grupo Sanguíneo.');

@@ -11,7 +11,7 @@
 
     <!-- Favicons -->
     
-    <link href="{% static 'core/img/logoapp.jpg' %}" rel="icon" >
+    <link href="{% static 'core/img/milogo.jpg' %}" rel="icon" >
 
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -42,53 +42,53 @@
         <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
               
                 <a href="" class="logo d-flex align-items-center me-auto me-xl-0">
-                    <img src="{% static 'core/img/tuapto.png' %}" alt="Logo" >
+                    <img src="{% static 'core/img/milogo.jpg' %}" alt="Logo"  >
                     <h1 class="sitename" >TU APTO</h1>    
                 </a>
            
-            <nav id="navmenu" class="navbar navbar-expand-lg navbar-light bg-white ">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto">
-                            {% if request.path != '/account/login/' %}
-                                {% if user.is_authenticated %}
-                                    <li class="nav-item me-4">
-                                        <a href="{% url 'perfil' %}" class="nav-link active">Perfil</a> 
-                                    </li>
-                                    <li class="nav-item me-4">
-                                        <button type="button" class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                                            Salir
-                                        </button>
-                                    </li>
-                                    <!-- Contenedor para el nombre y apellido -->
-                                    <li class="nav-item me-4">
-                                        <span class="navbar-text fw-bold">
-                                            {{ profile.nombre }} {{ profile.apellido }}
-                                        </span>
-                                    </li>
-                    
-                                   <!-- Menú Condicional según el tipo de perfil -->
-                                    {% if profile.rol == 'jugador' %}
-                                    <li class="nav-item me-4">
-                                        <a href="{% url 'menu_jugador' %}" class="nav-link"></a> <!-- Cambia 'menu_jugador' por la URL de tu vista de jugador -->
-                                    </li>
+                <nav id="navmenu" class="navbar navbar-expand-lg navbar-light bg-white">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav ms-auto align-items-center">
+                                {% if request.path != '/account/login/' %}
+                                    {% if user.is_authenticated %}
+                                        <li class="nav-item me-3">
+                                            <a href="{% url 'perfil' %}" class="nav-link active">Perfil</a>
+                                        </li>
+                                        <li class="nav-item me-3">
+                                            <button type="button" class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                                Salir
+                                            </button>
+                                        </li>
+                                        <!-- Contenedor para el nombre y apellido -->
+                                        <li class="nav-item">
+                                            <span class="navbar-text fw-bold">
+                                                {{ profile.nombre }} {{ profile.apellido }}
+                                            </span>
+                                        </li>
+                                        <!-- Menú Condicional según el tipo de perfil -->
+                                        {% if profile.rol == 'jugador' %}
+                                            <li class="nav-item me-3">
+                                                <a href="{% url 'menu_jugador' %}" class="nav-link"></a>
+                                            </li>
+                                        {% endif %}
+                                    {% else %}
+                                        <li class="nav-item me-3">
+                                            <a href="{% url 'login' %}" class="nav-link">Inicia</a>
+                                        </li>
+                                        <li class="nav-item me-3">
+                                            <a href="{% url 'register' %}" class="nav-link">Regístrate</a>
+                                        </li>
                                     {% endif %}
-                                {% else %}
-                                    <li class="nav-item me-4">
-                                        <a href="{% url 'login' %}" class="nav-link">Inicia</a> <!-- Cambia 'login' por la URL de tu vista de inicio de sesión -->
-                                    </li>
-                                    <li class="nav-item me-4">
-                                        <a href="{% url 'register' %}" class="nav-link">Regístrate</a> <!-- URL para registrarse -->
-                                    </li>
                                 {% endif %}
-                            {% endif %}
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+                
 
         </div>
     </header>
